@@ -69,7 +69,24 @@ namespace NumericalMethods.Task1
         static void Main(string[] args)
         {
             ILeakyMatrix<double> matrix = GenerateMatrix();
-            
+
+            ReduceAdditionalDiagonale(matrix);
+            RemoveBadArray(matrix, 5);
+            RemoveBadArray(matrix, 6);
+            SimplifyMainDiagonale(matrix);
+
+            Console.WriteLine(matrix.ToMatrixString());
+            Console.ReadKey(true);
+        }
+
+        private static void SimplifyMainDiagonale(ILeakyMatrix<double> matrix)
+        {
+            for (int rowIndex = 0; rowIndex < 12; ++rowIndex)
+                matrix.DivideBy(rowIndex, matrix[rowIndex, rowIndex]);
+        }
+
+        private static void ReduceAdditionalDiagonale(ILeakyMatrix<double> matrix)
+        {
             for (int rowIndex = 0; rowIndex < 6; ++rowIndex)
             {
                 int nextRow = rowIndex + 1;
@@ -78,9 +95,29 @@ namespace NumericalMethods.Task1
                     .DivideBy(nextRow, matrix[nextRow, rowIndex])
                     .SubLines(nextRow, rowIndex);
             }
-                
-            Console.WriteLine(matrix.ToMatrixString());
-            Console.ReadKey(true);
+
+            for (int rowIndex = 11; rowIndex > 6; --rowIndex)
+            {
+                int prevRow = rowIndex - 1;
+                matrix
+                    .DivideBy(rowIndex, matrix[rowIndex, rowIndex])
+                    .DivideBy(prevRow, matrix[prevRow, rowIndex])
+                    .SubLines(prevRow, rowIndex);
+            }
+        }
+
+        private static void RemoveBadArray(ILeakyMatrix<double> matrix, int badIndex)
+        {
+            matrix.DivideBy(6, matrix[6, 6]);
+
+            for (int rowIndex = 0; rowIndex < 12; ++rowIndex)
+            {
+                if (rowIndex == badIndex)
+                    continue;
+                matrix
+                    .DivideBy(rowIndex, matrix[rowIndex, badIndex])
+                    .SubLines(rowIndex, badIndex);
+            }
         }
     }
 }
