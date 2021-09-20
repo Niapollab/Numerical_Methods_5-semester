@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NumericalMethods.Core;
 using NumericalMethods.Core.Extensions;
 using NumericalMethods.Core.Interfaces;
@@ -41,7 +42,7 @@ namespace NumericalMethods.Task1
             };
         }
     }
-    
+
     class Program
     {
         static ILeakyMatrix<double> GenerateMatrix()
@@ -65,10 +66,33 @@ namespace NumericalMethods.Task1
             }
             return new FirstTaskMatrix(matrix);
         }
-        
+
+        static ILeakyMatrix<double> ReadMatrixFromConsole(char separator = ' ')
+        {
+            var lines = ConsoleExtensions.EnumerateLines();
+            double[][] matrix = lines.Select(line =>
+            {
+                return line
+                    .Split(separator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                    .Select(el => double.Parse(el))
+                    .ToArray();
+            }).ToArray();
+            
+            int minRowLength = matrix.Select(row => row.Length).Min();
+
+            var result = new double[matrix.Length, minRowLength];
+
+            for (int rowIndex = 0; rowIndex < result.GetLength(0); ++rowIndex)
+                for (int columnIndex = 0; columnIndex < result.GetLength(1); ++columnIndex)
+                    result[rowIndex, columnIndex] = matrix[rowIndex][columnIndex];
+
+            return new FirstTaskMatrix(result);
+        }
+
         static void Main(string[] args)
         {
-            ILeakyMatrix<double> matrix = GenerateMatrix();
+            Console.WriteLine("Введите матрицу: ");
+            ILeakyMatrix<double> matrix = ReadMatrixFromConsole();
 
             ReduceAdditionalDiagonale(matrix);
             RemoveBadArray(matrix, 5);
@@ -81,41 +105,41 @@ namespace NumericalMethods.Task1
 
         private static void SimplifyMainDiagonale(ILeakyMatrix<double> matrix)
         {
-            for (int rowIndex = 0; rowIndex < 12; ++rowIndex)
-                matrix.DivideBy(rowIndex, matrix[rowIndex, rowIndex]);
+            for (int rowIndex = 0; rowIndex < matrix.RowsCount; ++rowIndex)
+                matrix.SafeDivideBy(rowIndex, matrix[rowIndex, rowIndex]);
         }
 
         private static void ReduceAdditionalDiagonale(ILeakyMatrix<double> matrix)
         {
-            for (int rowIndex = 0; rowIndex < 6; ++rowIndex)
+            for (int rowIndex = 0; rowIndex < matrix.RowsCount / 2; ++rowIndex)
             {
                 int nextRow = rowIndex + 1;
                 matrix
-                    .DivideBy(rowIndex, matrix[rowIndex, rowIndex])
-                    .DivideBy(nextRow, matrix[nextRow, rowIndex])
+                    .SafeDivideBy(rowIndex, matrix[rowIndex, rowIndex])
+                    .SafeDivideBy(nextRow, matrix[nextRow, rowIndex])
                     .SubLines(nextRow, rowIndex);
             }
 
-            for (int rowIndex = 11; rowIndex > 6; --rowIndex)
+            for (int rowIndex = matrix.RowsCount - 1; rowIndex > matrix.RowsCount / 2; --rowIndex)
             {
                 int prevRow = rowIndex - 1;
                 matrix
-                    .DivideBy(rowIndex, matrix[rowIndex, rowIndex])
-                    .DivideBy(prevRow, matrix[prevRow, rowIndex])
+                    .SafeDivideBy(rowIndex, matrix[rowIndex, rowIndex])
+                    .SafeDivideBy(prevRow, matrix[prevRow, rowIndex])
                     .SubLines(prevRow, rowIndex);
             }
         }
 
         private static void RemoveBadArray(ILeakyMatrix<double> matrix, int badIndex)
         {
-            matrix.DivideBy(6, matrix[6, 6]);
+            matrix.SafeDivideBy(matrix.RowsCount / 2, matrix[matrix.RowsCount / 2, matrix.RowsCount / 2]);
 
-            for (int rowIndex = 0; rowIndex < 12; ++rowIndex)
+            for (int rowIndex = 0; rowIndex < matrix.RowsCount; ++rowIndex)
             {
                 if (rowIndex == badIndex)
                     continue;
                 matrix
-                    .DivideBy(rowIndex, matrix[rowIndex, badIndex])
+                    .SafeDivideBy(rowIndex, matrix[rowIndex, badIndex])
                     .SubLines(rowIndex, badIndex);
             }
         }

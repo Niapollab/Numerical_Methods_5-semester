@@ -113,7 +113,33 @@ namespace NumericalMethods.Core.Extensions
             
             return matrix;
         }
-    
+
+        public static ILeakyMatrix<double> SafeDivideBy(this ILeakyMatrix<double> matrix, int lineIndex, double element)
+        {
+            try
+            {
+                matrix.DivideBy(lineIndex, element);
+            }
+            catch (DivideByZeroException)
+            {
+
+            }
+            return matrix;
+        }
+
+        public static ILeakyMatrix<double> SafeDivideBy(this ILeakyMatrix<double> matrix, double element)
+        {
+            try
+            {
+                matrix.DivideBy(element);
+            }
+            catch
+            {
+
+            }
+            return matrix;
+        }
+
         public static string ToMatrixString(this ILeakyMatrix<double> matrix, int digitsAfterComma = 2, char space = '\t')
         {            
             var builder = new StringBuilder();
