@@ -52,8 +52,8 @@ namespace NumericalMethods.Task1
             for (int i = 0; i < _rowsCount && i < _columnsCount; ++i)
                 _b[i] = matrix[i, i];
 
-            _c = new double[_columnsCount - 1];
-            for (int i = 0; i < _rowsCount && i + 1 < _columnsCount; ++i)
+            _c = new double[_rowsCount - 1];
+            for (int i = 0; i < _rowsCount - 1 && i + 1 < _columnsCount; ++i)
                 _c[i] = matrix[i, i + 1];
 
             _d = new double[_rowsCount];
@@ -69,31 +69,10 @@ namespace NumericalMethods.Task1
                 _f[i] = matrix[i, _columnsCount - 1];
 
             FirstPhase();
-            SecondPhase();
-            ThirdPhase();
+            // SecondPhase();
+            // ThirdPhase();
+            // FourthPhase();
         }
-
-        private void ThirdPhase()
-        {
-            for (int i = 0; i < _rowsCount; ++i)
-            {
-                if (i != 5 && _d[i] != 0)
-                {
-                    DevideLine(i, _d[i]);
-                    
-                    _d[i] -= _d[5];
-                    _e[i] -= _e[5];
-                }
-            }
-            //_a[5] = _d[6];
-            //_a[6] = _e[7];
-
-            //_b[6] = _e[6];
-
-            //_c[4] = _d[4];
-            //_c[4] = _e[5];
-        }
-
         private void MultiplyLine(int rowIndex, double element)
         {
             if (IsBelongsToA(rowIndex))
@@ -158,13 +137,16 @@ namespace NumericalMethods.Task1
                     continue;
 
                 DevideLine(i, _b[i]);
+                ThrowIfNotEqual();
 
                 if (_a[i] == 0)
                     continue;
 
                 DevideLine(i + 1, _a[i]);
+                ThrowIfNotEqual();
 
                 SubCurrentFromNext(i);
+                ThrowIfNotEqual();
             }
         }
 
@@ -176,14 +158,48 @@ namespace NumericalMethods.Task1
                     continue;
 
                 DevideLine(i, _b[i]);
+                ThrowIfNotEqual();
 
                 if (_c[i - 1] == 0)
                     continue;
 
                 DevideLine(i - 1, _c[i - 1]);
+                ThrowIfNotEqual();
 
                 SubPrevFromCurrent(i);
+                ThrowIfNotEqual();
             }
+        }
+
+        private void ThirdPhase()
+        {
+            if (_e[6] != 0)
+            {
+                DevideLine(6, _e[6]);
+                ThrowIfNotEqual();
+            }
+        }
+
+        private void FourthPhase()
+        {
+            for (int i = 0; i < _rowsCount; ++i)
+            {
+                if (i != 5 && _d[i] != 0)
+                {
+                    DevideLine(i, _d[i]);
+                    ThrowIfNotEqual();
+
+                    _d[i] -= _d[5];
+                    _e[i] -= _e[5];
+                }
+            }
+            //_a[5] = _d[6];
+            //_a[6] = _e[7];
+
+            //_b[6] = _e[6];
+
+            //_c[4] = _d[4];
+            //_c[4] = _e[5];
         }
 
         private bool IsBelongsToC(int rowIndex)
@@ -191,6 +207,17 @@ namespace NumericalMethods.Task1
 
         private static bool IsBelongsToA(int rowIndex)
             => rowIndex > 0;
+
+        private void ThrowIfNotEqual()
+        {
+            if (_c[4] != _d[4]
+                || _c[5] != _e[5]
+                || _b[5] != _d[5]
+                || _b[6] != _e[6]
+                || _a[5] != _d[6]
+                || _a[6] != _e[7])
+                throw new InvalidOperationException();
+        }
 
         private string ToString(int digitsAfterComma, char separator = '\t')
         {
@@ -205,7 +232,7 @@ namespace NumericalMethods.Task1
                 if (!leakyMatrix.ContainsKey((i, i)))
                     leakyMatrix.Add((i, i), _b[i]);
 
-            for (int i = 0; i < _rowsCount && i + 1 < _columnsCount; ++i)
+            for (int i = 0; i < _rowsCount - 1 && i + 1 < _columnsCount; ++i)
                 if (!leakyMatrix.ContainsKey((i, i + 1)))
                     leakyMatrix.Add((i, i + 1), _c[i]);
 
