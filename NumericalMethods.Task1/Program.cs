@@ -69,7 +69,7 @@ namespace NumericalMethods.Task1
                 _f[i] = matrix[i, _columnsCount - 1];
 
             FirstPhase();
-            // SecondPhase();
+            SecondPhase();
             // ThirdPhase();
             // FourthPhase();
         }
@@ -110,6 +110,7 @@ namespace NumericalMethods.Task1
                 _d[rowIndex + 1] -= _d[rowIndex];
                 _e[rowIndex + 1] -= _e[rowIndex];
                 _f[rowIndex + 1] -= _f[rowIndex];
+                RebaseIntersectionElements();
             }
             else
                 throw new ArgumentOutOfRangeException(nameof(rowIndex), "");
@@ -124,6 +125,7 @@ namespace NumericalMethods.Task1
                 _d[rowIndex] -= _d[rowIndex - 1];
                 _e[rowIndex] -= _e[rowIndex - 1];
                 _f[rowIndex] -= _f[rowIndex - 1];
+                RebaseIntersectionElements();
             }
             else
                 throw new ArgumentOutOfRangeException(nameof(rowIndex), "");
@@ -210,13 +212,29 @@ namespace NumericalMethods.Task1
 
         private void ThrowIfNotEqual()
         {
-            if (_c[4] != _d[4]
-                || _c[5] != _e[5]
-                || _b[5] != _d[5]
-                || _b[6] != _e[6]
-                || _a[5] != _d[6]
-                || _a[6] != _e[7])
-                throw new InvalidOperationException();
+            var preds = new Dictionary<string, bool>()
+            {
+                {"_c[4] != _d[4]", _c[4] != _d[4]},
+                {"_c[5] != _e[5]", _c[5] != _e[5]},
+                {"_b[5] != _d[5]", _b[5] != _d[5]},
+                {"_b[6] != _e[6]", _b[6] != _e[6]},
+                {"_a[5] != _d[6]", _a[5] != _d[6]},
+                {"_a[6] != _e[7]", _a[6] != _e[7]},
+            };
+
+            foreach (KeyValuePair<string, bool> pred in preds)
+                if (pred.Value)
+                    throw new InvalidOperationException(pred.Key);
+        }
+
+        private void RebaseIntersectionElements()
+        {
+            _c[4] = _d[4];
+            _c[5] = _e[5];
+            _b[5] = _d[5];
+            _b[6] = _e[6];
+            _a[5] = _d[6];
+            _a[6] = _e[7];
         }
 
         private string ToString(int digitsAfterComma, char separator = '\t')
