@@ -68,8 +68,14 @@ namespace NumericalMethods.Task1
             for (int i = 0; i < _rowsCount; ++i)
                 _f[i] = matrix[i, _columnsCount - 1];
 
-            FirstPhase();
-            SecondPhase();
+            for (int i = 0; i < _rowsCount - 1; ++i)
+            {
+                SubCurrentFromNext(i);
+                ThrowIfNotEqual();
+            }
+
+            // FirstPhase();
+            // SecondPhase();
             // ThirdPhase();
             // FourthPhase();
         }
@@ -110,7 +116,12 @@ namespace NumericalMethods.Task1
                 _d[rowIndex + 1] -= _d[rowIndex];
                 _e[rowIndex + 1] -= _e[rowIndex];
                 _f[rowIndex + 1] -= _f[rowIndex];
-                RebaseIntersectionElements();
+
+                int nextRow = rowIndex + 1;
+                if (nextRow == 4)
+                    _c[4] = _d[4];
+                else if (nextRow == 5)
+                    _c[5] = _e[5];
             }
             else
                 throw new ArgumentOutOfRangeException(nameof(rowIndex), "");
@@ -125,7 +136,6 @@ namespace NumericalMethods.Task1
                 _d[rowIndex] -= _d[rowIndex - 1];
                 _e[rowIndex] -= _e[rowIndex - 1];
                 _f[rowIndex] -= _f[rowIndex - 1];
-                RebaseIntersectionElements();
             }
             else
                 throw new ArgumentOutOfRangeException(nameof(rowIndex), "");
@@ -227,17 +237,7 @@ namespace NumericalMethods.Task1
                     throw new InvalidOperationException(pred.Key);
         }
 
-        private void RebaseIntersectionElements()
-        {
-            _c[4] = _d[4];
-            _c[5] = _e[5];
-            _b[5] = _d[5];
-            _b[6] = _e[6];
-            _a[5] = _d[6];
-            _a[6] = _e[7];
-        }
-
-        private string ToString(int digitsAfterComma, char separator = '\t')
+        public string ToString(int digitsAfterComma, char separator = '\t')
         {
             var builder = new StringBuilder();
             var leakyMatrix = new Dictionary<(int, int), double>();
@@ -290,10 +290,10 @@ namespace NumericalMethods.Task1
 
     class Program
     {
-        static double[,] GenerateMatrix()
+        static double[,] GenerateMatrix(int rowsCount, int columnsCount)
         {
             var random = new Random();
-            var matrix = new double[12, 12];
+            var matrix = new double[rowsCount, columnsCount];
             for (var i = 0; i < matrix.GetLength(0); ++i)
             {
                 matrix[i, i] = random.Next(2, 10);
@@ -314,23 +314,34 @@ namespace NumericalMethods.Task1
 
         static void Main(string[] args)
         {
-            var rawMatrix = new double[,]
-            {
-                {-9, -6, 0, 0, 0, -4, -7, 0, 0, 0, -37},
-                {-5, 2, 10, 0, 0, 1, -2, 0, 0, 0, 5},
-                {0, -7, -7, -2, 0, -7, -6, 0, 0, 0, -42},
-                {0, 0, 6, -1, -1, -1, -2, 0, 0, 0, -2},
-                {0, 0, 0, -4, 1, 1, 0, 0, 0, 0, -1},
-                {0, 0, 0, 0, 9, -7, 8, 0, 0, 0, 11},
-                {0, 0, 0, 0, 0, 5, 0, -8, 0, 0, -6},
-                {0, 0, 0, 0, 0, 10, 2, 3, 8, 0, 46},
-                {0, 0, 0, 0, 0, -2, 6, 8, 6, 8, 52},
-                {0, 0, 0, 0, 0, 6, -1, 0, -6, -8, -18}
-            };
-            // var rawMatrix = GenerateMatrix();
+            //var rawMatrix = new double[,]
+            //{
+            //    {-9, -6, 0, 0, 0, -4, -7, 0, 0, 0, -37},
+            //    {-5, 2, 10, 0, 0, 1, -2, 0, 0, 0, 5},
+            //    {0, -7, -7, -2, 0, -7, -6, 0, 0, 0, -42},
+            //    {0, 0, 6, -1, -1, -1, -2, 0, 0, 0, -2},
+            //    {0, 0, 0, -4, 1, 1, 0, 0, 0, 0, -1},
+            //    {0, 0, 0, 0, 9, -7, 8, 0, 0, 0, 11},
+            //    {0, 0, 0, 0, 0, 5, 0, -8, 0, 0, -6},
+            //    {0, 0, 0, 0, 0, 10, 2, 3, 8, 0, 46},
+            //    {0, 0, 0, 0, 0, -2, 6, 8, 6, 8, 52},
+            //    {0, 0, 0, 0, 0, 6, -1, 0, -6, -8, -18}
+            //};
+
+            var rawMatrix = GenerateMatrix(10, 10);
             var matrix = new FirstTaskMatrix(rawMatrix);
 
-            Console.WriteLine(matrix);
+            for (int i = 0; i < rawMatrix.GetLength(0) - 1; ++i)
+            {
+                for (int j = 0; j < rawMatrix.GetLength(1); ++j)
+                {
+                    rawMatrix[i + 1, j] -= rawMatrix[i, j];
+                }
+            }
+
+            Console.WriteLine(matrix.ToString(2));
+            Console.WriteLine();
+            Console.WriteLine(rawMatrix.ToString(2));
 
             Console.ReadKey(true);
         }
