@@ -4,6 +4,9 @@ using System.Text;
 
 namespace NumericalMethods.Task1
 {
+    /// <summary>
+    /// Представляет матрицу решения первой задачи.
+    /// </summary>
     /// <example>
     /// *	*				*	*					
     /// *	*	*			*	*					
@@ -38,7 +41,6 @@ namespace NumericalMethods.Task1
         private readonly double[] _e;
 
         private readonly double[] _f;
-
         public FirstTaskMatrix(double[,] matrix)
         {
             _rowsCount = matrix.GetLength(0);
@@ -73,21 +75,8 @@ namespace NumericalMethods.Task1
             ThirdPhase();
             FourthPhase();
         }
-        private void MultiplyLine(int rowIndex, double element)
-        {
-            if (IsBelongsToA(rowIndex))
-                _a[rowIndex - 1] *= element;
 
-            _b[rowIndex] *= element;
-            _d[rowIndex] *= element;
-            _e[rowIndex] *= element;
-            _f[rowIndex] *= element;
-
-            if (IsBelongsToC(rowIndex))
-                _c[rowIndex] *= element;
-        }
-
-        private void DevideLine(int rowIndex, double element)
+        protected virtual void DevideLine(int rowIndex, double element)
         {
             if (IsBelongsToA(rowIndex))
                 _a[rowIndex - 1] /= element;
@@ -101,7 +90,7 @@ namespace NumericalMethods.Task1
                 _c[rowIndex] /= element;
         }
 
-        private void SubCurrentFromNext(int rowIndex)
+        protected virtual void SubCurrentFromNext(int rowIndex)
         {
             if (rowIndex < _rowsCount - 1)
             {
@@ -121,7 +110,7 @@ namespace NumericalMethods.Task1
                 throw new ArgumentOutOfRangeException(nameof(rowIndex), "");
         }
 
-        private void SubPrevFromCurrent(int rowIndex)
+        protected virtual void SubPrevFromCurrent(int rowIndex)
         {
             if (rowIndex > 0)
             {
@@ -141,7 +130,7 @@ namespace NumericalMethods.Task1
                 throw new ArgumentOutOfRangeException(nameof(rowIndex), "");
         }
 
-        private void FirstPhase()
+        protected virtual void FirstPhase()
         {
             for (int i = 0; i <= 5; ++i)
             {
@@ -149,20 +138,17 @@ namespace NumericalMethods.Task1
                     continue;
 
                 DevideLine(i, _b[i]);
-                ThrowIfNotEqual();
 
                 if (_a[i] == 0)
                     continue;
 
                 DevideLine(i + 1, _a[i]);
-                ThrowIfNotEqual();
 
                 SubCurrentFromNext(i);
-                ThrowIfNotEqual();
             }
         }
 
-        private void SecondPhase()
+        protected virtual void SecondPhase()
         {
             for (int i = _rowsCount - 1; i > 6; --i)
             {
@@ -170,26 +156,22 @@ namespace NumericalMethods.Task1
                     continue;
 
                 DevideLine(i, _b[i]);
-                ThrowIfNotEqual();
 
                 if (_c[i - 1] == 0)
                     continue;
 
                 DevideLine(i - 1, _c[i - 1]);
-                ThrowIfNotEqual();
 
                 SubPrevFromCurrent(i);
-                ThrowIfNotEqual();
             }
 
             if (_e[6] != 0)
             {
                 DevideLine(6, _e[6]);
-                ThrowIfNotEqual();
             }
         }
 
-        private void ThirdPhase()
+        protected virtual void ThirdPhase()
         {
             for (int i = 0; i < _rowsCount; ++i)
             {
@@ -208,15 +190,13 @@ namespace NumericalMethods.Task1
             _b[6] = _e[6];
             _c[4] = _d[4];
             _c[5] = _e[5];
-            ThrowIfNotEqual();
         }
 
-        private void FourthPhase()
+        protected virtual void FourthPhase()
         {
             if (_e[6] != 0)
             {
                 DevideLine(6, _e[6]);
-                ThrowIfNotEqual();
             }
 
             for (int i = 0; i < _rowsCount; ++i)
@@ -236,31 +216,13 @@ namespace NumericalMethods.Task1
             _b[6] = _e[6];
             _c[4] = _d[4];
             _c[5] = _e[5];
-            ThrowIfNotEqual();
         }
 
-        private bool IsBelongsToC(int rowIndex)
+        protected bool IsBelongsToC(int rowIndex)
             => rowIndex < _rowsCount - 1;
 
-        private static bool IsBelongsToA(int rowIndex)
+        protected bool IsBelongsToA(int rowIndex)
             => rowIndex > 0;
-
-        private void ThrowIfNotEqual()
-        {
-            var preds = new Dictionary<string, bool>()
-            {
-                {"_c[4] != _d[4]", _c[4] != _d[4]},
-                {"_c[5] != _e[5]", _c[5] != _e[5]},
-                {"_b[5] != _d[5]", _b[5] != _d[5]},
-                {"_b[6] != _e[6]", _b[6] != _e[6]},
-                {"_a[5] != _d[6]", _a[5] != _d[6]},
-                {"_a[6] != _e[7]", _a[6] != _e[7]},
-            };
-
-            foreach (KeyValuePair<string, bool> pred in preds)
-                if (pred.Value)
-                    throw new InvalidOperationException(pred.Key);
-        }
 
         public string ToString(int digitsAfterComma, char separator = '\t')
         {
