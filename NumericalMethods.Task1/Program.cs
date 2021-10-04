@@ -74,6 +74,7 @@ namespace NumericalMethods.Task1
             SecondPhase();
             ThirdPhase();
             FourthPhase();
+            FifthPhase();
         }
 
         protected virtual void DevideLine(int rowIndex, double element)
@@ -132,55 +133,54 @@ namespace NumericalMethods.Task1
 
         protected virtual void FirstPhase()
         {
-            for (int i = 0; i <= 5; ++i)
+            for (var rowIndex = 0; rowIndex <= 5; ++rowIndex)
             {
-                if (_b[i] == 0)
+                if (_b[rowIndex] == 0)
                     continue;
 
-                DevideLine(i, _b[i]);
+                DevideLine(rowIndex, _b[rowIndex]);
 
-                if (_a[i] == 0)
+                if (_a[rowIndex] == 0)
                     continue;
 
-                DevideLine(i + 1, _a[i]);
+                DevideLine(rowIndex + 1, _a[rowIndex]);
 
-                SubCurrentFromNext(i);
+                SubCurrentFromNext(rowIndex);
             }
         }
 
         protected virtual void SecondPhase()
         {
-            for (int i = _rowsCount - 1; i > 6; --i)
+            for (var rowIndex = _rowsCount - 1; rowIndex > 6; --rowIndex)
             {
-                if (_b[i] == 0)
+                if (_b[rowIndex] == 0)
                     continue;
 
-                DevideLine(i, _b[i]);
+                DevideLine(rowIndex, _b[rowIndex]);
 
-                if (_c[i - 1] == 0)
+                if (_c[rowIndex - 1] == 0)
                     continue;
 
-                DevideLine(i - 1, _c[i - 1]);
+                DevideLine(rowIndex - 1, _c[rowIndex - 1]);
 
-                SubPrevFromCurrent(i);
+                SubPrevFromCurrent(rowIndex);
             }
 
             if (_e[6] != 0)
-            {
                 DevideLine(6, _e[6]);
-            }
         }
 
         protected virtual void ThirdPhase()
         {
-            for (int i = 0; i < _rowsCount; ++i)
+            for (var rowIndex = 0; rowIndex < _rowsCount; ++rowIndex)
             {
-                if (i != 5 && _d[i] != 0)
+                if (rowIndex != 5 && _d[rowIndex] != 0)
                 {
-                    DevideLine(i, _d[i]);
+                    DevideLine(rowIndex, _d[rowIndex]);
 
-                    _d[i] -= _d[5];
-                    _e[i] -= _e[5];
+                    _d[rowIndex] -= _d[5];
+                    _e[rowIndex] -= _e[5];
+                    _f[rowIndex] -= _f[5];
                 }
             }
 
@@ -195,18 +195,17 @@ namespace NumericalMethods.Task1
         protected virtual void FourthPhase()
         {
             if (_e[6] != 0)
-            {
                 DevideLine(6, _e[6]);
-            }
 
-            for (int i = 0; i < _rowsCount; ++i)
+            for (var rowIndex = 0; rowIndex < _rowsCount; ++rowIndex)
             {
-                if (i != 6 && _e[i] != 0)
+                if (rowIndex != 6 && _e[rowIndex] != 0)
                 {
-                    DevideLine(i, _e[i]);
+                    DevideLine(rowIndex, _e[rowIndex]);
 
-                    _d[i] -= _d[6];
-                    _e[i] -= _e[6];
+                    _d[rowIndex] -= _d[6];
+                    _e[rowIndex] -= _e[6];
+                    _f[rowIndex] -= _f[6];
                 }
             }
 
@@ -216,6 +215,13 @@ namespace NumericalMethods.Task1
             _b[6] = _e[6];
             _c[4] = _d[4];
             _c[5] = _e[5];
+        }
+
+        protected virtual void FifthPhase()
+        {
+            for (var rowIndex = 0; rowIndex < _rowsCount; ++rowIndex)
+                if (_b[rowIndex] != 0)
+                    DevideLine(rowIndex, _b[rowIndex]);
         }
 
         protected bool IsBelongsToC(int rowIndex)
@@ -301,21 +307,21 @@ namespace NumericalMethods.Task1
 
         static void Main(string[] args)
         {
-            var rawMatrix = new double[,]
-            {
-                {-9, -6, 0, 0, 0, -4, -7, 0, 0, 0, -37},
-                {-5, 2, 10, 0, 0, 1, -2, 0, 0, 0, 5},
-                {0, -7, -7, -2, 0, -7, -6, 0, 0, 0, -42},
-                {0, 0, 6, -1, -1, -1, -2, 0, 0, 0, -2},
-                {0, 0, 0, -4, 1, 1, 0, 0, 0, 0, -1},
-                {0, 0, 0, 0, 9, -7, 8, 0, 0, 0, 11},
-                {0, 0, 0, 0, 0, 5, 0, -8, 0, 0, -6},
-                {0, 0, 0, 0, 0, 10, 2, 3, 8, 0, 46},
-                {0, 0, 0, 0, 0, -2, 6, 8, 6, 8, 52},
-                {0, 0, 0, 0, 0, 6, -1, 0, -6, -8, -18}
-            };
+            //var rawMatrix = new double[,]
+            //{
+            //    {-9, -6, 0, 0, 0, -4, -7, 0, 0, 0, -37},
+            //    {-5, 2, 10, 0, 0, 1, -2, 0, 0, 0, 5},
+            //    {0, -7, -7, -2, 0, -7, -6, 0, 0, 0, -42},
+            //    {0, 0, 6, -1, -1, -1, -2, 0, 0, 0, -2},
+            //    {0, 0, 0, -4, 1, 1, 0, 0, 0, 0, -1},
+            //    {0, 0, 0, 0, 9, -7, 8, 0, 0, 0, 11},
+            //    {0, 0, 0, 0, 0, 5, 0, -8, 0, 0, -6},
+            //    {0, 0, 0, 0, 0, 10, 2, 3, 8, 0, 46},
+            //    {0, 0, 0, 0, 0, -2, 6, 8, 6, 8, 52},
+            //    {0, 0, 0, 0, 0, 6, -1, 0, -6, -8, -18}
+            //};
 
-            // var rawMatrix = GenerateMatrix(10, 10);
+            var rawMatrix = GenerateMatrix(12, 13);
             var matrix = new FirstTaskMatrix(rawMatrix);
 
             Console.WriteLine(matrix.ToString(2));
