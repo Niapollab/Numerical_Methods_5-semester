@@ -68,9 +68,15 @@ namespace NumericalMethods.Task1
             for (int i = 0; i < _rowsCount; ++i)
                 _f[i] = matrix[i, _columnsCount - 1];
 
-            for (int i = 0; i < _rowsCount - 1; ++i)
+            //for (int i = 0; i < _rowsCount - 1; ++i)
+            //{
+            //    SubCurrentFromNext(i);
+            //    ThrowIfNotEqual();
+            //}
+
+            for (int i = _rowsCount - 1; i > 0; --i)
             {
-                SubCurrentFromNext(i);
+                SubPrevFromCurrent(i);
                 ThrowIfNotEqual();
             }
 
@@ -111,13 +117,13 @@ namespace NumericalMethods.Task1
         {
             if (rowIndex < _rowsCount - 1)
             {
-                _a[rowIndex] -= _b[rowIndex];
-                _b[rowIndex + 1] -= _c[rowIndex];
-                _d[rowIndex + 1] -= _d[rowIndex];
-                _e[rowIndex + 1] -= _e[rowIndex];
-                _f[rowIndex + 1] -= _f[rowIndex];
-
                 int nextRow = rowIndex + 1;
+                _a[rowIndex] -= _b[rowIndex];
+                _b[nextRow] -= _c[rowIndex];
+                _d[nextRow] -= _d[rowIndex];
+                _e[nextRow] -= _e[rowIndex];
+                _f[nextRow] -= _f[rowIndex];
+
                 if (nextRow == 4)
                     _c[4] = _d[4];
                 else if (nextRow == 5)
@@ -131,11 +137,17 @@ namespace NumericalMethods.Task1
         {
             if (rowIndex > 0)
             {
+                int prevRow = rowIndex - 1;
                 _c[rowIndex - 1] -= _b[rowIndex];
-                _b[rowIndex - 1] -= _a[rowIndex - 1];
-                _d[rowIndex] -= _d[rowIndex - 1];
-                _e[rowIndex] -= _e[rowIndex - 1];
-                _f[rowIndex] -= _f[rowIndex - 1];
+                _b[prevRow] -= _a[prevRow];
+                _d[prevRow] -= _d[rowIndex];
+                _e[prevRow] -= _e[rowIndex];
+                _f[prevRow] -= _f[rowIndex];
+
+                if (prevRow == 7)
+                    _a[6] = _e[7];
+                else if (prevRow == 6)
+                    _a[5] = _d[6];
             }
             else
                 throw new ArgumentOutOfRangeException(nameof(rowIndex), "");
@@ -331,11 +343,11 @@ namespace NumericalMethods.Task1
             var rawMatrix = GenerateMatrix(10, 10);
             var matrix = new FirstTaskMatrix(rawMatrix);
 
-            for (int i = 0; i < rawMatrix.GetLength(0) - 1; ++i)
+            for (int i = rawMatrix.GetLength(0) - 1; i > 0; --i)
             {
                 for (int j = 0; j < rawMatrix.GetLength(1); ++j)
                 {
-                    rawMatrix[i + 1, j] -= rawMatrix[i, j];
+                    rawMatrix[i - 1, j] -= rawMatrix[i, j];
                 }
             }
 
