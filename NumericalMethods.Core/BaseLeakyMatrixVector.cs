@@ -30,7 +30,7 @@ namespace NumericalMethods.Core
                 if (IsBelongs(rowIndex, columnIndex))
                     SafeSetValue(rowIndex, columnIndex, value);
                 else if (!EqualityComparer<T>.Default.Equals(value, default))
-                    throw new ArgumentOutOfRangeException("Невозможно установить не нулевой элемент в [{rowIndex},{columnIndex}], так как там находится дырка.");
+                    throw new ArgumentOutOfRangeException(nameof(value), "Невозможно установить не нулевой элемент в [{rowIndex},{columnIndex}], так как там находится дырка.");
             }
         }
 

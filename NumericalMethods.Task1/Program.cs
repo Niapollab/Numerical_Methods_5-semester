@@ -41,6 +41,11 @@ namespace NumericalMethods.Task1
         private readonly double[] _e;
 
         private readonly double[] _f;
+
+        private readonly double[] _result;
+
+        public IReadOnlyList<double> Result => _result;
+
         public FirstTaskMatrix(double[,] matrix)
         {
             _rowsCount = matrix.GetLength(0);
@@ -70,11 +75,14 @@ namespace NumericalMethods.Task1
             for (int i = 0; i < _rowsCount; ++i)
                 _f[i] = matrix[i, _columnsCount - 1];
 
+            _result = new double[_rowsCount];
+
             FirstPhase();
             SecondPhase();
             ThirdPhase();
             FourthPhase();
             FifthPhase();
+            CalculatePhase();
         }
 
         protected virtual void DevideLine(int rowIndex, double element)
@@ -224,10 +232,22 @@ namespace NumericalMethods.Task1
                     DevideLine(rowIndex, _b[rowIndex]);
         }
 
-        protected bool IsBelongsToC(int rowIndex)
+        protected virtual void CalculatePhase()
+        {
+            for (var rowIndex = 4; rowIndex <= 7; ++rowIndex)
+                _result[rowIndex] = _f[rowIndex];
+
+            for (var rowIndex = 3; rowIndex >= 0; --rowIndex)
+                _result[rowIndex] = _f[rowIndex] - _c[rowIndex] * _result[rowIndex + 1];
+
+            for (var rowIndex = 8; rowIndex < _rowsCount; ++rowIndex)
+                _result[rowIndex] = _f[rowIndex] - _a[rowIndex - 1] * _result[rowIndex - 1];
+        }
+
+        protected virtual bool IsBelongsToC(int rowIndex)
             => rowIndex < _rowsCount - 1;
 
-        protected bool IsBelongsToA(int rowIndex)
+        protected virtual bool IsBelongsToA(int rowIndex)
             => rowIndex > 0;
 
         public string ToString(int digitsAfterComma, char separator = '\t')
@@ -305,26 +325,28 @@ namespace NumericalMethods.Task1
             return matrix;
         }
 
-        static void Main(string[] args)
+        static void Main()
         {
-            //var rawMatrix = new double[,]
-            //{
-            //    {-9, -6, 0, 0, 0, -4, -7, 0, 0, 0, -37},
-            //    {-5, 2, 10, 0, 0, 1, -2, 0, 0, 0, 5},
-            //    {0, -7, -7, -2, 0, -7, -6, 0, 0, 0, -42},
-            //    {0, 0, 6, -1, -1, -1, -2, 0, 0, 0, -2},
-            //    {0, 0, 0, -4, 1, 1, 0, 0, 0, 0, -1},
-            //    {0, 0, 0, 0, 9, -7, 8, 0, 0, 0, 11},
-            //    {0, 0, 0, 0, 0, 5, 0, -8, 0, 0, -6},
-            //    {0, 0, 0, 0, 0, 10, 2, 3, 8, 0, 46},
-            //    {0, 0, 0, 0, 0, -2, 6, 8, 6, 8, 52},
-            //    {0, 0, 0, 0, 0, 6, -1, 0, -6, -8, -18}
-            //};
+            var rawMatrix = new double[,]
+            {
+                {-9, -6, 0, 0, 0, -4, -7, 0, 0, 0, -37},
+                {-5, 2, 10, 0, 0, 1, -2, 0, 0, 0, 5},
+                {0, -7, -7, -2, 0, -7, -6, 0, 0, 0, -42},
+                {0, 0, 6, -1, -1, -1, -2, 0, 0, 0, -2},
+                {0, 0, 0, -4, 1, 1, 0, 0, 0, 0, -1},
+                {0, 0, 0, 0, 9, -7, 8, 0, 0, 0, 11},
+                {0, 0, 0, 0, 0, 5, 0, -8, 0, 0, -6},
+                {0, 0, 0, 0, 0, 10, 2, 3, 8, 0, 46},
+                {0, 0, 0, 0, 0, -2, 6, 8, 6, 8, 52},
+                {0, 0, 0, 0, 0, 6, -1, 0, -6, -8, -18}
+            };
 
-            var rawMatrix = GenerateMatrix(12, 13);
+            // var rawMatrix = GenerateMatrix(12, 13);
             var matrix = new FirstTaskMatrix(rawMatrix);
 
             Console.WriteLine(matrix.ToString(2));
+            Console.WriteLine("Результат:");
+            Console.WriteLine(string.Join(Environment.NewLine, matrix.Result));
 
             Console.ReadKey(true);
         }
