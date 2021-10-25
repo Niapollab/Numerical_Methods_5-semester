@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Text; 
+using System.IO;
 
 namespace NumericalMethods.Task1
 {
@@ -44,7 +45,11 @@ namespace NumericalMethods.Task1
 
         private readonly double[] _result;
 
+        private double accuracy1;
+
         public IReadOnlyList<double> Result => _result;
+
+        public double Accuracy1 { get => accuracy1; set => accuracy1 = value; }
 
         public FirstTaskMatrix(double[,] matrix)
         {
@@ -62,7 +67,7 @@ namespace NumericalMethods.Task1
             _c = new double[_rowsCount - 1];
             for (int i = 0; i < _rowsCount - 1 && i + 1 < _columnsCount; ++i)
                 _c[i] = matrix[i, i + 1];
-
+              
             _d = new double[_rowsCount];
             for (int i = 0; i < _rowsCount && 5 < _columnsCount; ++i)
                 _d[i] = matrix[i, 5];
@@ -77,12 +82,46 @@ namespace NumericalMethods.Task1
 
             _result = new double[_rowsCount];
 
-            FirstPhase();
-            SecondPhase();
-            ThirdPhase();
-            FourthPhase();
-            FifthPhase();
-            CalculatePhase();
+
+            Console.WriteLine("0:");
+            Console.WriteLine(ToString(2));
+            Console.WriteLine("\n");
+            FirstPhase(); 
+            SecondPhase(); 
+            ThirdPhase(); 
+            FourthPhase(); 
+            FifthPhase(); 
+            CalculatePhase(); 
+
+            //Console.WriteLine("0:");
+            //Console.WriteLine(ToString(2));
+            //Console.WriteLine("\n");
+            //FirstPhase();
+            //Console.WriteLine("1:");
+            //Console.WriteLine(ToString(2));
+            //Console.WriteLine("\n");
+            //SecondPhase();
+
+            //Console.WriteLine("2:");
+            //Console.WriteLine(ToString(2));
+            //Console.WriteLine("\n");
+
+            //ThirdPhase();
+            //Console.WriteLine("3:");
+            //Console.WriteLine(ToString(2));
+            //Console.WriteLine("\n");
+            //FourthPhase();
+            //Console.WriteLine("4:");
+            //Console.WriteLine(ToString(2));
+            //Console.WriteLine("\n");
+            //FifthPhase();
+            //Console.WriteLine("5:");
+            //Console.WriteLine(ToString(2));
+            //Console.WriteLine("\n");
+            //CalculatePhase();
+            //Console.WriteLine("Last:");
+            //Console.WriteLine(ToString(2));
+            //Console.WriteLine("\n");
         }
 
         protected virtual void DevideLine(int rowIndex, double element)
@@ -198,6 +237,7 @@ namespace NumericalMethods.Task1
             _b[6] = _e[6];
             _c[4] = _d[4];
             _c[5] = _e[5];
+
         }
 
         protected virtual void FourthPhase()
@@ -299,6 +339,36 @@ namespace NumericalMethods.Task1
 
         public override string ToString()
             => ToString(2);
+
+        public void Accuracy() //оценка точности
+        {
+            Accuracy1 = 0;
+            for (int i = 0; i < _rowsCount; i++)
+            {
+                if (Accuracy1 < Math.Abs(_result[i] - 1))
+                {
+                    Accuracy1 = Math.Abs(_result[i] - 1); 
+                }
+            } 
+        }
+
+        ////Средняя относительная погрешность системы
+        //public double RelativeAccuracy()  
+        //{
+        //    int index = -1;
+        //    double max = 0;
+        //    for (int i = 0; i < _rowsCount; i++)
+        //    {
+        //        Console.WriteLine(Math.Abs(_result[i] - 1));
+        //        if (max < Math.Abs(_result[i] - 1))
+        //        {
+        //            max = Math.Abs(_result[i] - 1);
+        //            index = i;
+        //        }
+        //    }
+        //    Console.WriteLine(index);
+        //    return max;
+        //}
     }
 
     class Program
@@ -321,32 +391,85 @@ namespace NumericalMethods.Task1
 
                 matrix[i, 6] = random.Next(2, 10);
 
+                matrix[i, columnsCount-1] = random.Next(2, 55);
+
             }
             return matrix;
         }
 
         static void Main()
         {
-            var rawMatrix = new double[,]
-            {
-                {-9, -6, 0, 0, 0, -4, -7, 0, 0, 0, -37},
-                {-5, 2, 10, 0, 0, 1, -2, 0, 0, 0, 5},
-                {0, -7, -7, -2, 0, -7, -6, 0, 0, 0, -42},
-                {0, 0, 6, -1, -1, -1, -2, 0, 0, 0, -2},
-                {0, 0, 0, -4, 1, 1, 0, 0, 0, 0, -1},
-                {0, 0, 0, 0, 9, -7, 8, 0, 0, 0, 11},
-                {0, 0, 0, 0, 0, 5, 0, -8, 0, 0, -6},
-                {0, 0, 0, 0, 0, 10, 2, 3, 8, 0, 46},
-                {0, 0, 0, 0, 0, -2, 6, 8, 6, 8, 52},
-                {0, 0, 0, 0, 0, 6, -1, 0, -6, -8, -18}
-            };
+            // var rawMatrix = new double[,]
+            // {
+            //     {-9, -6, 0, 0, 0, -4, -7, 0, 0, 0, -37},
+            //     {-5, 2, 10, 0, 0, 1, -2, 0, 0, 0, 5},
+            //     {0, -7, -7, -2, 0, -7, -6, 0, 0, 0, -42},
+            //     {0, 0, 6, -1, -1, -1, -2, 0, 0, 0, -2},
+            //     {0, 0, 0, -4, 1, 1, 0, 0, 0, 0, -1},
+            //     {0, 0, 0, 0, 9, -7, 8, 0, 0, 0, 11},
+            //     {0, 0, 0, 0, 0, 5, 2, -8, 0, 0, -2},
+            //     {0, 0, 0, 0, 0, 10, 2, 3, 8, 0, 46},
+            //     {0, 0, 0, 0, 0, -2, 6, 8, 2, 8, 44},
+            //     {0, 0, 0, 0, 0, 6, -1, 0, -6, -8, -18}
+            // };
 
-            // var rawMatrix = GenerateMatrix(12, 13);
+            // var rawMatrix1 = new double[,]
+            //{
+            //     {-9, -6, 0, 0, 0, -4, -7, 0, 0, 0, 1},
+            //     {-5, 2, 10, 0, 0, 1, -2, 0, 0, 0, 1},
+            //     {0, -7, -7, -2, 0, -7, -6, 0, 0, 0, 1},
+            //     {0, 0, 6, -1, -1, -1, -2, 0, 0, 0, 1},
+            //     {0, 0, 0, -4, 1, 1, 0, 0, 0, 0, 1},
+            //     {0, 0, 0, 0, 9, -7, 8, 0, 0, 0, 1},
+            //     {0, 0, 0, 0, 0, 5, 2, -8, 0, 0, 1},
+            //     {0, 0, 0, 0, 0, 10, 2, 3, 8, 0, 1},
+            //     {0, 0, 0, 0, 0, -2, 6, 8, 2, 8, 1},
+            //     {0, 0, 0, 0, 0, 6, -1, 0, -6, -8, 1}
+            //};
+            int raw = 80, column = raw + 1;
+            var rawMatrix = GenerateMatrix(raw, column);
+
+            using (StreamWriter stream = new("C:\\Users\\Acer\\OneDrive\\Документы\\5 семестр\\чм\\matrix.txt"))
+            {
+                for (int i = 0; i < raw; i++)
+                {
+                    for (int k = 0; k < column; k++)
+                        stream.Write($"{rawMatrix[i, k]} ");
+                    stream.WriteLine();
+                }
+            }
+
+
+
+
+            double[,] rawMatrix1 = new double[raw, column];
+            for (int i=0; i< rawMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < rawMatrix.GetLength(1); j++)
+                {
+                    rawMatrix1[i, j] = rawMatrix[i, j];
+                }
+
+            }
+            for (int i = 0; i < rawMatrix1.GetLength(0); ++i)
+            {
+                rawMatrix1[i, rawMatrix1.GetLength(1) - 1] = 1;
+            }
+
             var matrix = new FirstTaskMatrix(rawMatrix);
+            var matrix1 = new FirstTaskMatrix(rawMatrix1);
 
             Console.WriteLine(matrix.ToString(2));
             Console.WriteLine("Результат:");
             Console.WriteLine(string.Join(Environment.NewLine, matrix.Result));
+
+            Console.WriteLine(matrix1.ToString(2));
+            Console.WriteLine("Результат:");
+            Console.WriteLine(string.Join(Environment.NewLine, matrix1.Result));
+
+            Console.WriteLine("Точность:");
+            matrix1.Accuracy();
+            Console.WriteLine(matrix1.Accuracy1);
 
             Console.ReadKey(true);
         }
