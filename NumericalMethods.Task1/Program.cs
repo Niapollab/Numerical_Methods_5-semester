@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text; 
-using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace NumericalMethods.Task1
 {
@@ -47,11 +47,9 @@ namespace NumericalMethods.Task1
 
         private bool _solved;
 
-        private double accuracy1;
-
         public IReadOnlyList<double> Result => _result;
 
-        public double Accuracy1 { get => accuracy1; set => accuracy1 = value; }
+        public double Accuracy { get; private set; }
 
         public FirstTaskMatrix(double[,] matrix)
         {
@@ -270,6 +268,7 @@ namespace NumericalMethods.Task1
                 FourthPhase();
                 FifthPhase();
                 CalculatePhase();
+                Accuracy = CalculateAccuracy();
             }
 
             return _result;
@@ -325,137 +324,122 @@ namespace NumericalMethods.Task1
         public override string ToString()
             => ToString(2);
 
-        public void Accuracy() //оценка точности
+        private double CalculateAccuracy()
         {
-            Accuracy1 = 0;
-            for (int i = 0; i < _rowsCount; i++)
-            {
-                if (Accuracy1 < Math.Abs(_result[i] - 1))
-                {
-                    Accuracy1 = Math.Abs(_result[i] - 1); 
-                }
-            } 
-        }
+            double accuracy = 0;
 
-        ////Средняя относительная погрешность системы
-        //public double RelativeAccuracy()  
-        //{
-        //    int index = -1;
-        //    double max = 0;
-        //    for (int i = 0; i < _rowsCount; i++)
-        //    {
-        //        Console.WriteLine(Math.Abs(_result[i] - 1));
-        //        if (max < Math.Abs(_result[i] - 1))
-        //        {
-        //            max = Math.Abs(_result[i] - 1);
-        //            index = i;
-        //        }
-        //    }
-        //    Console.WriteLine(index);
-        //    return max;
-        //}
+            for (int i = 0; i < _rowsCount; ++i)
+                accuracy = Math.Max(accuracy, Math.Abs(_result[i] - 1));
+
+            return accuracy;
+        }
     }
 
     class Program
     {
-        static double[,] GenerateMatrix(int rowsCount, int columnsCount)
+        static double[,] GenerateMatrix(int rowsCount, int columnsCount, int minValue, int maxValue)
         {
             var random = new Random();
             var matrix = new double[rowsCount, columnsCount];
             for (var i = 0; i < matrix.GetLength(0); ++i)
             {
-                matrix[i, i] = random.Next(2, 10);
+                matrix[i, i] = random.NextNotZero(minValue, maxValue);
 
                 if (i + 1 < matrix.GetLength(1))
-                    matrix[i, i + 1] = random.Next(2, 10);
+                    matrix[i, i + 1] = random.NextNotZero(minValue, maxValue + 1);
 
                 if (i + 1 < matrix.GetLength(0))
-                    matrix[i + 1, i] = random.Next(2, 10);
+                    matrix[i + 1, i] = random.NextNotZero(minValue, maxValue + 1);
 
-                matrix[i, 5] = random.Next(2, 10);
+                matrix[i, 5] = random.NextNotZero(minValue, maxValue + 1);
 
-                matrix[i, 6] = random.Next(2, 10);
-
-                matrix[i, columnsCount-1] = random.Next(2, 55);
-
+                matrix[i, 6] = random.NextNotZero(minValue, maxValue + 1);
             }
             return matrix;
         }
 
+        static double[,] AppendRightSide(double[,] matrix, double[] rightSide)
+        {
+            var result = new double[matrix.GetLength(0), matrix.GetLength(1) + 1];
+
+            for (int i = 0; i < matrix.GetLength(0); ++i)
+                for (int j = 0; j < matrix.GetLength(1); ++j)
+                    result[i, j] = matrix[i, j];
+
+            for (int i = 0; i < matrix.GetLength(0); ++i)
+                result[i, matrix.GetLength(1)] = rightSide[i];
+
+            return result;
+        }
+
+        static double RelativeAccuracy(double[] exactSolution, double[] solution)
+        {
+            const double Q = 1e-5;
+            double relativeAccuracy = 0;
+
+            for (int i = 0; i < exactSolution.Length; ++i)
+            {
+                if (Math.Abs(exactSolution[i]) > Q)
+                {
+                    relativeAccuracy = Math.Max(relativeAccuracy, Math.Abs((solution[i] - exactSolution[i]) / exactSolution[i]));
+                }
+                else
+                {
+                    relativeAccuracy = Math.Max(relativeAccuracy, Math.Abs(solution[i] - exactSolution[i]));
+                }
+            }
+
+            return relativeAccuracy;
+        }
+
+        static (double Accuracy, double RelativeAccuracy) FindAccuracies(int N, int minValue, int maxValue)
+        {
+            var rand = new Random();
+
+            var matrixWithoutRightSide = GenerateMatrix(N, N, minValue, maxValue);
+
+            var exactSolution = Enumerable.Range(1, N).Select(x => rand.NextNotZero(minValue, maxValue)).ToArray();
+            var exactSingleSolution = Enumerable.Repeat(1, N).Select(x => (double)x).ToArray();
+
+            var rightSideBuilder = new RightSideBuilder(matrixWithoutRightSide);
+            var rightSide = rightSideBuilder.CalculateRightSide(exactSolution);
+            var singleRightSide = rightSideBuilder.CalculateRightSide(exactSingleSolution);
+
+            var matrix = new FirstTaskMatrix(AppendRightSide(matrixWithoutRightSide, rightSide));
+            var solution = matrix.Solve();
+
+            var matrixWithSingleRightSide = new FirstTaskMatrix(AppendRightSide(matrixWithoutRightSide, singleRightSide));
+            matrixWithSingleRightSide.Solve();
+
+            return (matrixWithSingleRightSide.Accuracy, RelativeAccuracy(exactSolution, solution));
+        }
+
         static void Main()
         {
-            // var rawMatrix = new double[,]
-            // {
-            //     {-9, -6, 0, 0, 0, -4, -7, 0, 0, 0, -37},
-            //     {-5, 2, 10, 0, 0, 1, -2, 0, 0, 0, 5},
-            //     {0, -7, -7, -2, 0, -7, -6, 0, 0, 0, -42},
-            //     {0, 0, 6, -1, -1, -1, -2, 0, 0, 0, -2},
-            //     {0, 0, 0, -4, 1, 1, 0, 0, 0, 0, -1},
-            //     {0, 0, 0, 0, 9, -7, 8, 0, 0, 0, 11},
-            //     {0, 0, 0, 0, 0, 5, 2, -8, 0, 0, -2},
-            //     {0, 0, 0, 0, 0, 10, 2, 3, 8, 0, 46},
-            //     {0, 0, 0, 0, 0, -2, 6, 8, 2, 8, 44},
-            //     {0, 0, 0, 0, 0, 6, -1, 0, -6, -8, -18}
-            // };
-
-            // var rawMatrix1 = new double[,]
-            //{
-            //     {-9, -6, 0, 0, 0, -4, -7, 0, 0, 0, 1},
-            //     {-5, 2, 10, 0, 0, 1, -2, 0, 0, 0, 1},
-            //     {0, -7, -7, -2, 0, -7, -6, 0, 0, 0, 1},
-            //     {0, 0, 6, -1, -1, -1, -2, 0, 0, 0, 1},
-            //     {0, 0, 0, -4, 1, 1, 0, 0, 0, 0, 1},
-            //     {0, 0, 0, 0, 9, -7, 8, 0, 0, 0, 1},
-            //     {0, 0, 0, 0, 0, 5, 2, -8, 0, 0, 1},
-            //     {0, 0, 0, 0, 0, 10, 2, 3, 8, 0, 1},
-            //     {0, 0, 0, 0, 0, -2, 6, 8, 2, 8, 1},
-            //     {0, 0, 0, 0, 0, 6, -1, 0, -6, -8, 1}
-            //};
-            int raw = 80, column = raw + 1;
-            var rawMatrix = GenerateMatrix(raw, column);
-
-            using (StreamWriter stream = new("C:\\Users\\Acer\\OneDrive\\Документы\\5 семестр\\чм\\matrix.txt"))
+            const int TestCount = 3;
+            var testCases = new (int n, int minValue, int maxValue)[]
             {
-                for (int i = 0; i < raw; i++)
-                {
-                    for (int k = 0; k < column; k++)
-                        stream.Write($"{rawMatrix[i, k]} ");
-                    stream.WriteLine();
-                }
-            }
+                (10, -10, 10),
+                (10, -100, 100),
+                (10, -1000, 1000),
+                (100, -10, 10),
+                (100, -100, 100),
+                (100, -1000, 1000),
+                (1000, -10, 10),
+                (1000, -100, 100),
+                (1000, -1000, 1000),
+            };
 
-
-
-
-            double[,] rawMatrix1 = new double[raw, column];
-            for (int i=0; i< rawMatrix.GetLength(0); i++)
+            foreach (var (n, minValue, maxValue) in testCases)
             {
-                for (int j = 0; j < rawMatrix.GetLength(1); j++)
-                {
-                    rawMatrix1[i, j] = rawMatrix[i, j];
-                }
+                var dirs = new (double Accuracy, double RelativeAccuracy)[TestCount];
+                for (int i = 0; i < TestCount; ++i)
+                    dirs[i] = FindAccuracies(n, minValue, maxValue);
 
+                Console.WriteLine($"N = {n}; Min = {minValue}; Max = {maxValue};");
+                Console.WriteLine($"Средняя относительная погрешность системы: {dirs.Select(x => x.Accuracy).Average()}");
+                Console.WriteLine($"Среднее значение оценки точности: {dirs.Select(x => x.RelativeAccuracy).Average()}");
             }
-            for (int i = 0; i < rawMatrix1.GetLength(0); ++i)
-            {
-                rawMatrix1[i, rawMatrix1.GetLength(1) - 1] = 1;
-            }
-
-            var matrix = new FirstTaskMatrix(rawMatrix);
-            var matrix1 = new FirstTaskMatrix(rawMatrix1);
-            matrix.Solve();
-
-            Console.WriteLine(matrix.ToString(2));
-            Console.WriteLine("Результат:");
-            Console.WriteLine(string.Join(Environment.NewLine, matrix.Result));
-
-            Console.WriteLine(matrix1.ToString(2));
-            Console.WriteLine("Результат:");
-            Console.WriteLine(string.Join(Environment.NewLine, matrix1.Result));
-
-            Console.WriteLine("Точность:");
-            matrix1.Accuracy();
-            Console.WriteLine(matrix1.Accuracy1);
 
             Console.ReadKey(true);
         }

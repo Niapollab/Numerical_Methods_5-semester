@@ -35,7 +35,7 @@ namespace NumericalMethods.Task1
             for (var i = 0; i < matrix.GetLength(0); ++i)
             {
                 for (var j = 0; j < matrix.GetLength(1); ++j)
-                    builder.Append(matrix[i, j].ToString()).Append(space);
+                    builder.Append(stringSelector(i, j, matrix[i, j])).Append(space);
                 builder.Remove(builder.Length - 1, 1);
                 builder.Append(Environment.NewLine);
             }
