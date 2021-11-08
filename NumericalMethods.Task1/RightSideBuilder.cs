@@ -1,4 +1,7 @@
-﻿namespace NumericalMethods.Task1
+﻿using System;
+using System.Collections.Generic;
+
+namespace NumericalMethods.Task1
 {
     public class RightSideBuilder
     {
@@ -6,18 +9,23 @@
 
         public RightSideBuilder(double[,] matrix)
         {
+            _ = matrix ?? throw new ArgumentNullException(nameof(matrix));
+
             _matrix = (double[,])matrix.Clone();
         }
 
-        public double[] CalculateRightSide(double[] expectedAnswer)
+        public IReadOnlyList<double> Build(IReadOnlyList<double> expectedSolution)
         {
-            var rightSide = new double[_matrix.GetLength(0)];
+            _ = expectedSolution ?? throw new ArgumentNullException(nameof(expectedSolution));
+            _ = expectedSolution.Count != _matrix.GetLength(1) ? throw new ArgumentException("") : true;
+
+            var side = new double[_matrix.GetLength(0)];
 
             for (var i = 0; i < _matrix.GetLength(0); ++i)
                 for (var j = 0; j < _matrix.GetLength(1); ++j)
-                    rightSide[i] += _matrix[i, j] * expectedAnswer[j];
+                    side[i] += _matrix[i, j] * expectedSolution[j];
 
-            return rightSide;
+            return side;
         }
     }
 }
