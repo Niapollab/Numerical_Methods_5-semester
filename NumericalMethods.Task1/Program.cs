@@ -27,23 +27,25 @@ namespace NumericalMethods.Task1
     /// </example>
     public class FirstTaskMatrix
     {
-        private readonly int _rowsCount;
+        protected readonly int _rowsCount;
 
-        private readonly int _columnsCount;
+        protected readonly int _columnsCount;
 
-        private readonly double[] _a;
+        protected readonly double[] _a;
 
-        private readonly double[] _b;
+        protected readonly double[] _b;
 
-        private readonly double[] _c;
+        protected readonly double[] _c;
 
-        private readonly double[] _d;
+        protected readonly double[] _d;
 
-        private readonly double[] _e;
+        protected readonly double[] _e;
 
-        private readonly double[] _f;
+        protected readonly double[] _f;
 
-        private readonly double[] _result;
+        protected readonly double[] _result;
+
+        private bool _solved;
 
         private double accuracy1;
 
@@ -53,6 +55,8 @@ namespace NumericalMethods.Task1
 
         public FirstTaskMatrix(double[,] matrix)
         {
+            _solved = false;
+
             _rowsCount = matrix.GetLength(0);
             _columnsCount = matrix.GetLength(1);
 
@@ -81,47 +85,6 @@ namespace NumericalMethods.Task1
                 _f[i] = matrix[i, _columnsCount - 1];
 
             _result = new double[_rowsCount];
-
-
-            Console.WriteLine("0:");
-            Console.WriteLine(ToString(2));
-            Console.WriteLine("\n");
-            FirstPhase(); 
-            SecondPhase(); 
-            ThirdPhase(); 
-            FourthPhase(); 
-            FifthPhase(); 
-            CalculatePhase(); 
-
-            //Console.WriteLine("0:");
-            //Console.WriteLine(ToString(2));
-            //Console.WriteLine("\n");
-            //FirstPhase();
-            //Console.WriteLine("1:");
-            //Console.WriteLine(ToString(2));
-            //Console.WriteLine("\n");
-            //SecondPhase();
-
-            //Console.WriteLine("2:");
-            //Console.WriteLine(ToString(2));
-            //Console.WriteLine("\n");
-
-            //ThirdPhase();
-            //Console.WriteLine("3:");
-            //Console.WriteLine(ToString(2));
-            //Console.WriteLine("\n");
-            //FourthPhase();
-            //Console.WriteLine("4:");
-            //Console.WriteLine(ToString(2));
-            //Console.WriteLine("\n");
-            //FifthPhase();
-            //Console.WriteLine("5:");
-            //Console.WriteLine(ToString(2));
-            //Console.WriteLine("\n");
-            //CalculatePhase();
-            //Console.WriteLine("Last:");
-            //Console.WriteLine(ToString(2));
-            //Console.WriteLine("\n");
         }
 
         protected virtual void DevideLine(int rowIndex, double element)
@@ -220,11 +183,13 @@ namespace NumericalMethods.Task1
         protected virtual void ThirdPhase()
         {
             for (var rowIndex = 0; rowIndex < _rowsCount; ++rowIndex)
+                if (rowIndex != 5 && _d[rowIndex] != 0)
+                    DevideLine(rowIndex, _d[rowIndex]);
+
+            for (var rowIndex = 0; rowIndex < _rowsCount; ++rowIndex)
             {
                 if (rowIndex != 5 && _d[rowIndex] != 0)
                 {
-                    DevideLine(rowIndex, _d[rowIndex]);
-
                     _d[rowIndex] -= _d[5];
                     _e[rowIndex] -= _e[5];
                     _f[rowIndex] -= _f[5];
@@ -248,9 +213,13 @@ namespace NumericalMethods.Task1
             for (var rowIndex = 0; rowIndex < _rowsCount; ++rowIndex)
             {
                 if (rowIndex != 6 && _e[rowIndex] != 0)
-                {
-                    DevideLine(rowIndex, _e[rowIndex]);
+                    DevideLine(rowIndex, _e[rowIndex]); 
+            }
 
+            for (var rowIndex = 0; rowIndex < _rowsCount; ++rowIndex)
+            {
+                if (rowIndex != 6 && _e[rowIndex] != 0)
+                {
                     _d[rowIndex] -= _d[6];
                     _e[rowIndex] -= _e[6];
                     _f[rowIndex] -= _f[6];
@@ -289,6 +258,22 @@ namespace NumericalMethods.Task1
 
         protected virtual bool IsBelongsToA(int rowIndex)
             => rowIndex > 0;
+
+        public double[] Solve()
+        {
+            if (!_solved)
+            {
+                _solved = true;
+                FirstPhase();
+                SecondPhase();
+                ThirdPhase();
+                FourthPhase();
+                FifthPhase();
+                CalculatePhase();
+            }
+
+            return _result;
+        }
 
         public string ToString(int digitsAfterComma, char separator = '\t')
         {
@@ -458,6 +443,7 @@ namespace NumericalMethods.Task1
 
             var matrix = new FirstTaskMatrix(rawMatrix);
             var matrix1 = new FirstTaskMatrix(rawMatrix1);
+            matrix.Solve();
 
             Console.WriteLine(matrix.ToString(2));
             Console.WriteLine("Результат:");
