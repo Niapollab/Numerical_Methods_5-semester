@@ -24,7 +24,7 @@ namespace NumericalMethods.Task1
     ///                     d   e                 a     b     c
     /// f - Right side
     /// </example>
-    public class FirstTaskMatrix
+    class FirstTaskMatrix
     {
         protected readonly int _rowsCount;
 

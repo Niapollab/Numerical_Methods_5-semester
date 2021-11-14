@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NumericalMethods.Task1
+namespace NumericalMethods.Core.Extensions
 {
     public static class FloatNumberExtensions
     {

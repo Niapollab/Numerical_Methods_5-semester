@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NumericalMethods.Task1
+namespace NumericalMethods.Core.Utils
 {
     public static class AccuracyUtils
     {
@@ -17,7 +17,7 @@ namespace NumericalMethods.Task1
             for (var i = 0; i < expectedSolution.Count; ++i)
             {
                 accuracy = Math.Max(accuracy, Math.Abs(
-                    Math.Abs(expectedSolution[i]) > eps 
+                    Math.Abs(expectedSolution[i]) > eps
                         ? (actualSolution[i] - expectedSolution[i]) / expectedSolution[i]
                         : actualSolution[i] - expectedSolution[i]
                 ));

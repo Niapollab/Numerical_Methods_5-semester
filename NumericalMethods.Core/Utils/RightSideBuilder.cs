@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NumericalMethods.Task1
+namespace NumericalMethods.Core.Utils
 {
     public class RightSideBuilder
     {

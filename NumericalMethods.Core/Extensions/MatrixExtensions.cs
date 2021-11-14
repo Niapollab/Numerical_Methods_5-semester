@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NumericalMethods.Task1
+namespace NumericalMethods.Core.Extensions
 {
     public static class MatrixExtensions
     {
@@ -41,7 +41,7 @@ namespace NumericalMethods.Task1
         {
             _ = matrix ?? throw new ArgumentNullException(nameof(matrix));
             _ = stringSelector ?? throw new ArgumentNullException(nameof(stringSelector));
-            
+
             var builder = new StringBuilder();
 
             for (var i = 0; i < matrix.GetLength(0); ++i)
@@ -61,9 +61,9 @@ namespace NumericalMethods.Task1
             _ = matrix ?? throw new ArgumentNullException(nameof(matrix));
             _ = column ?? throw new ArgumentNullException(nameof(column));
             _ = matrix.GetLength(0) != column.Count ? throw new ArgumentException("Column size is larger than the original matrix column size.") : true;
-            
+
             index = index > -1 && index < matrix.GetLength(1) ? index : matrix.GetLength(1);
-        
+
             var newMatrix = new double[matrix.GetLength(0), matrix.GetLength(1) + 1];
             for (var i = 0; i < matrix.GetLength(0); ++i)
             {
@@ -84,9 +84,9 @@ namespace NumericalMethods.Task1
             _ = matrix ?? throw new ArgumentNullException(nameof(matrix));
             _ = row ?? throw new ArgumentNullException(nameof(row));
             _ = matrix.GetLength(1) != row.Count ? throw new ArgumentException("Row size is larger than the original matrix row size.") : true;
-            
+
             index = index > -1 && index < matrix.GetLength(0) ? index : matrix.GetLength(0);
-        
+
             var newMatrix = new double[matrix.GetLength(0) + 1, matrix.GetLength(1)];
             for (var j = 0; j < matrix.GetLength(1); ++j)
             {

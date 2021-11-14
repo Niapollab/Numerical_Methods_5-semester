@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NumericalMethods.Task1.Tests
 {
-    public class TestFirstTaskMatrix : FirstTaskMatrix
+    class TestFirstTaskMatrix : FirstTaskMatrix
     {
         private readonly double[,] _realMatrix;
 
