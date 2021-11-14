@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using NumericalMethods.Core.Extensions;
 using NumericalMethods.Core.Utils;
+using NumericalMethods.Core.Utils.Interfaces;
+using NumericalMethods.Core.Utils.RandomProviders;
 
 namespace NumericalMethods.Task1
 {
@@ -10,15 +12,15 @@ namespace NumericalMethods.Task1
     {
         const double NonZeroEps = 1e-5;
 
+        static readonly IRandomProvider<double> _random = new DoubleRandomProvider(NonZeroEps).NotDefault();
+
         static (double UnitAccuracy, double RandomAccuracy) FindAccuracies(int count, double minValue, double maxValue)
         {
             _ = count < 0 ? throw new ArgumentOutOfRangeException(nameof(count), "The number of elements must not be negative.") : true;
 
-            var random = new Random();
+            double[,] matrixWithoutRightSide = _random.GenerateMatrix(count, count, minValue, maxValue);
 
-            double[,] matrixWithoutRightSide = random.GenerateMatrix(count, count, minValue, maxValue, NonZeroEps);
-
-            IReadOnlyList<double> expectRandomSolution = random.GenerateVector(count, minValue, maxValue, NonZeroEps);
+            IReadOnlyList<double> expectRandomSolution = _random.Repeat(count, minValue, maxValue).ToArray();
             IReadOnlyList<double> expectUnitSolution = Enumerable.Repeat(1, count).Select(x => (double)x).ToArray();
 
             var rightSideBuilder = new RightSideBuilder(matrixWithoutRightSide);

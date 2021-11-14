@@ -1,6 +1,6 @@
 ﻿using System;
 using NumericalMethods.Core.Extensions;
-using NumericalMethods.Core.Utils;
+using NumericalMethods.Core.Utils.RandomProviders;
 
 namespace NumericalMethods.Task2
 {
@@ -10,8 +10,8 @@ namespace NumericalMethods.Task2
         
         static void Main()
         {
-            var random = new Random();
-            double[,] matrixWithoutRightSide = random.GenerateBandedSymmetricMatrix(10, 10, 3, 1, 10, 1e-5);
+            var random = new WholeDoubleRandomProvider().NotDefault();
+            double[,] matrixWithoutRightSide = random.GenerateBandedSymmetricMatrix(10, 10, 3, 1, 10);
             Console.WriteLine(matrixWithoutRightSide.ToString(2));
             Console.ReadKey(true);
         }
