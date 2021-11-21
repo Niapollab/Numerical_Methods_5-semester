@@ -1,30 +1,60 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using NumericalMethods.Core.Extensions;
+using NumericalMethods.Core.Utils;
+using NumericalMethods.Core.Utils.Interfaces;
 using NumericalMethods.Core.Utils.RandomProviders;
 
 namespace NumericalMethods.Task2
 {
     class Program
     {
-        const double NonZeroEps = 1e-5;
+        private static readonly IRandomProvider<int> _intRandom = new IntegerRandomProvider();
+
+        private static readonly IRandomProvider<double> _doubleRandom = new DoubleRandomProvider();
         
+        const double NonZeroEps = 1e-5;
+
+        static double FindAccuracies(int count, int halfRibbonLength, double minValue, double maxValue)
+        {
+            _ = count < 0 ? throw new ArgumentOutOfRangeException(nameof(count), "The number of elements must not be negative.") : true;
+
+            double[,] matrixWithoutRightSide = _doubleRandom.GenerateBandedSymmetricMatrix(count, count, halfRibbonLength, minValue, maxValue);
+
+            IReadOnlyList<double> expectRandomSolution = _doubleRandom.Repeat(count, minValue, maxValue).ToArray();
+            
+            var rightSideBuilder = new RightSideBuilder(matrixWithoutRightSide);
+            IReadOnlyList<double> randomRightSide = rightSideBuilder.Build(expectRandomSolution);
+
+            double[,] decomposition = CholeskyAlgorithms.DecomposeBandedMatrix(matrixWithoutRightSide, halfRibbonLength);
+
+            IReadOnlyList<double> solution = DecompositionUtils.Solve(decomposition, randomRightSide);
+
+            return AccuracyUtils.CalculateAccuracy(expectRandomSolution, solution, NonZeroEps);
+        }
+
         static void Main()
         {
-            const int MatrixLength = 5;
-            const int HalfRibbonLength = 2;
-            const double MinValue = 1;
-            const double MaxValue = 10;
+            const int TestCount = 2;
+            var testCases = new TestCase[]
+            {
+                new TestCase(_intRandom, _intRandom.Next(10, 99), _doubleRandom.Next(10, 99), _doubleRandom.Next(10, 99)),
+                new TestCase(_intRandom, _intRandom.Next(10, 99), _doubleRandom.Next(10, 99), _doubleRandom.Next(10, 99)),
+                new TestCase(_intRandom, _intRandom.Next(100, 999), _doubleRandom.Next(100, 999), _doubleRandom.Next(100, 999)),
+                new TestCase(_intRandom, _intRandom.Next(100, 999), _doubleRandom.Next(100, 999), _doubleRandom.Next(100, 999))
+            };
 
-            var random = new WholeDoubleRandomProvider().NotDefault();
-            
-            double[,] matrixWithoutRightSide = random.GenerateBandedSymmetricMatrix(MatrixLength, MatrixLength, HalfRibbonLength, MinValue, MaxValue);
+            foreach (TestCase testCase in testCases)
+            {
+                IReadOnlyList<double> accuracies = Enumerable
+                    .Range(1, TestCount)
+                    .Select(_ => FindAccuracies(testCase.MatrixLength, testCase.HalfRibbonLength, testCase.MinValue, testCase.MaxValue))
+                    .ToArray();
 
-            double[,] applyToRawMatrix = CholeskyAlgorithms.Decompose(matrixWithoutRightSide);
-            double[,] temp = CholeskyAlgorithms.DecomposeBandedMatrix(matrixWithoutRightSide, HalfRibbonLength);
-
-            Console.WriteLine(applyToRawMatrix.ToString(2));
-            Console.WriteLine("-----------");
-            Console.WriteLine(temp.ToString(2));
+                Console.WriteLine($"N = {testCase.MatrixLength}; HalfRibbonLength = {testCase.HalfRibbonLength}; Min = {testCase.MinValue}; Max = {testCase.MaxValue};");
+                Console.WriteLine($"Средняя относительная погрешность системы: {accuracies.Average()}");
+            }
 
             Console.ReadKey(true);
         }

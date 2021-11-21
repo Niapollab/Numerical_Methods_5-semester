@@ -41,7 +41,8 @@ namespace NumericalMethods.Task2
         public static double[,] DecomposeBandedMatrix(double[,] matrix, int halfRibbonLength)
         {
             _ = matrix ?? throw new ArgumentNullException(nameof(matrix));
-            
+            _ = halfRibbonLength > matrix.GetLength(0) || halfRibbonLength > matrix.GetLength(1) ? throw new ArgumentOutOfRangeException(nameof(halfRibbonLength), "Half Ribbon Length must be greater than zero.") : true;
+
             var resultMatrix = new double[matrix.GetLength(0), matrix.GetLength(1)];
             var lMatrix = resultMatrix;
             var uMatrix = resultMatrix;
