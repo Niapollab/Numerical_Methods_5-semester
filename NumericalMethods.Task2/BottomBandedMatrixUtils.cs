@@ -26,7 +26,7 @@ namespace NumericalMethods.Task2
             _ = rowIndex < 0 ? throw new ArgumentOutOfRangeException(nameof(rowIndex), "Row index must be positive.") : true;
             _ = halfRibbonLength < 0 ? throw new ArgumentOutOfRangeException(nameof(halfRibbonLength), "Half Ribbon Length must be greater than zero.") : true;
             
-            return Math.Min(halfRibbonLength, rowIndex); 
+            return Math.Min(halfRibbonLength, rowIndex);
         }
 
         public static double[,] ToRectangularMatrix(double[,] matrix, int halfRibbonLength)
