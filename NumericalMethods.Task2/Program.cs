@@ -20,7 +20,7 @@ namespace NumericalMethods.Task2
         {
             _ = count < 0 ? throw new ArgumentOutOfRangeException(nameof(count), "The number of elements must not be negative.") : true;
 
-            double[,] matrixWithoutRightSide = _doubleRandom.GenerateBandedSymmetricMatrix(count, count, halfRibbonLength, minValue, maxValue);
+            double[,] matrixWithoutRightSide = _doubleRandom.GenerateBandedSymmetricMatrix(count, count, halfRibbonLength, minValue, maxValue).ToPoorlyConditionedMatrix();
 
             IReadOnlyList<double> expectRandomSolution = _doubleRandom.Repeat(count, minValue, maxValue).ToArray();
             
