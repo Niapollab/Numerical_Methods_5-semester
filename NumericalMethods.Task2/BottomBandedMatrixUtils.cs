@@ -41,8 +41,8 @@ namespace NumericalMethods.Task2
 
             for (var i = 0; i < matrix.GetLength(0); ++i)
             {
-                int columnStartsIndex = BottomBandedMatrixUtils.GetColumnStartsIndex(i, halfRibbonLength);
-                int columnEndsIndex = columnStartsIndex + BottomBandedMatrixUtils.GetRowLength(i, halfRibbonLength);
+                int columnStartsIndex = GetColumnStartsIndex(i, halfRibbonLength);
+                int columnEndsIndex = columnStartsIndex + GetRowLength(i, halfRibbonLength);
 
                 for (var j = columnStartsIndex; j <= columnEndsIndex; ++j)
                 {
