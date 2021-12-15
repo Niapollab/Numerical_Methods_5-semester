@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumericalMethods.Core", "Nu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumericalMethods.Task2", "NumericalMethods.Task2\NumericalMethods.Task2.csproj", "{5585DE63-2B70-416D-BA31-1868A973CB1B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumericalMethods.Task3", "NumericalMethods.Task3\NumericalMethods.Task3.csproj", "{02CA1A76-51C3-4C36-9F58-BB8F871586F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{5585DE63-2B70-416D-BA31-1868A973CB1B}.Release|x64.Build.0 = Release|Any CPU
 		{5585DE63-2B70-416D-BA31-1868A973CB1B}.Release|x86.ActiveCfg = Release|Any CPU
 		{5585DE63-2B70-416D-BA31-1868A973CB1B}.Release|x86.Build.0 = Release|Any CPU
+		{02CA1A76-51C3-4C36-9F58-BB8F871586F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02CA1A76-51C3-4C36-9F58-BB8F871586F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02CA1A76-51C3-4C36-9F58-BB8F871586F4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{02CA1A76-51C3-4C36-9F58-BB8F871586F4}.Debug|x64.Build.0 = Debug|Any CPU
+		{02CA1A76-51C3-4C36-9F58-BB8F871586F4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{02CA1A76-51C3-4C36-9F58-BB8F871586F4}.Debug|x86.Build.0 = Debug|Any CPU
+		{02CA1A76-51C3-4C36-9F58-BB8F871586F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02CA1A76-51C3-4C36-9F58-BB8F871586F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02CA1A76-51C3-4C36-9F58-BB8F871586F4}.Release|x64.ActiveCfg = Release|Any CPU
+		{02CA1A76-51C3-4C36-9F58-BB8F871586F4}.Release|x64.Build.0 = Release|Any CPU
+		{02CA1A76-51C3-4C36-9F58-BB8F871586F4}.Release|x86.ActiveCfg = Release|Any CPU
+		{02CA1A76-51C3-4C36-9F58-BB8F871586F4}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -27,7 +27,7 @@ namespace NumericalMethods.Task2
             var rightSideBuilder = new RightSideBuilder(matrixWithoutRightSide);
             IReadOnlyList<double> randomRightSide = rightSideBuilder.Build(expectRandomSolution);
 
-            double[,] decomposition = CholeskyAlgorithms.DecomposeBandedMatrix(matrixWithoutRightSide, halfRibbonLength);
+            double[,] decomposition = CholeskyAlgorithm.DecomposeBandedMatrix(matrixWithoutRightSide, halfRibbonLength);
 
             IReadOnlyList<double> solution = DecompositionUtils.Solve(decomposition, randomRightSide);
 
