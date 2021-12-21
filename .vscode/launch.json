@@ -27,6 +27,17 @@
             "console": "externalTerminal"
         },
         {
+            "name": "Launch Task 3",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/NumericalMethods.Task3/bin/Debug/net5.0/NumericalMethods.Task3.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/NumericalMethods.Task3",
+            "console": "externalTerminal",
+            "stopAtEntry": false
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"
