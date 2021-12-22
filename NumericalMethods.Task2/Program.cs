@@ -5,6 +5,7 @@ using NumericalMethods.Core.Extensions;
 using NumericalMethods.Core.Utils;
 using NumericalMethods.Core.Utils.Interfaces;
 using NumericalMethods.Core.Utils.RandomProviders;
+using NumericalMethods.Task3.Utils;
 
 namespace NumericalMethods.Task2
 {
@@ -29,7 +30,7 @@ namespace NumericalMethods.Task2
 
             double[,] decomposition = CholeskyAlgorithm.DecomposeBandedMatrix(matrixWithoutRightSide, halfRibbonLength);
 
-            IReadOnlyList<double> solution = DecompositionUtils.Solve(decomposition, randomRightSide);
+            IReadOnlyList<double> solution = MatrixDecompositionUtils.Solve(decomposition, randomRightSide);
 
             return AccuracyUtils.CalculateAccuracy(expectRandomSolution, solution, NonZeroEps);
         }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NumericalMethods.Task2
+namespace NumericalMethods.Task3.Utils
 {
-    static class DecompositionUtils
+    public static class MatrixDecompositionUtils
     {
         public static IReadOnlyList<double> Solve(double[,] decomposition, IReadOnlyList<double> rightSide)
         {

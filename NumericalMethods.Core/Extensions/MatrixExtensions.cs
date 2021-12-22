@@ -7,49 +7,54 @@ namespace NumericalMethods.Core.Extensions
     public static class MatrixExtensions
     {
         #region ToString Methods
-        public static string ToString(this double[,] matrix, int digitsAfterComma = 2, char space = '\t')
+        public static string ToString(this double[,] matrix, int digitsAfterComma = 2, string separator = "\t")
         {
             _ = matrix ?? throw new ArgumentNullException(nameof(matrix));
             _ = digitsAfterComma < 0 ? throw new ArgumentOutOfRangeException(nameof(digitsAfterComma), "The numbers after the decimal point must be positive.") : true;
+            _ = separator ?? throw new ArgumentNullException(nameof(separator));
 
-            return matrix.ToString((i, j, value) => Math.Round(value, digitsAfterComma).ToString(), space);
+            return matrix.ToString((i, j, value) => Math.Round(value, digitsAfterComma).ToString(), separator);
         }
 
-        public static string ToString(this float[,] matrix, int digitsAfterComma = 2, char space = '\t')
+        public static string ToString(this float[,] matrix, int digitsAfterComma = 2, string separator = "\t")
         {
             _ = matrix ?? throw new ArgumentNullException(nameof(matrix));
             _ = digitsAfterComma < 0 ? throw new ArgumentOutOfRangeException(nameof(digitsAfterComma), "The numbers after the decimal point must be positive.") : true;
+            _ = separator ?? throw new ArgumentNullException(nameof(separator));
 
-            return matrix.ToString((i, j, value) => Math.Round(value, digitsAfterComma).ToString(), space);
+            return matrix.ToString((i, j, value) => Math.Round(value, digitsAfterComma).ToString(), separator);
         }
 
-        public static string ToString(this decimal[,] matrix, int digitsAfterComma = 2, char space = '\t')
+        public static string ToString(this decimal[,] matrix, int digitsAfterComma = 2, string separator = "\t")
         {
             _ = matrix ?? throw new ArgumentNullException(nameof(matrix));
             _ = digitsAfterComma < 0 ? throw new ArgumentOutOfRangeException(nameof(digitsAfterComma), "The numbers after the decimal point must be positive.") : true;
+            _ = separator ?? throw new ArgumentNullException(nameof(separator));
 
-            return matrix.ToString((i, j, value) => Math.Round(value, digitsAfterComma).ToString(), space);
+            return matrix.ToString((i, j, value) => Math.Round(value, digitsAfterComma).ToString(), separator);
         }
 
-        public static string ToString<T>(this T[,] matrix, char space = '\t')
+        public static string ToString<T>(this T[,] matrix, string separator = "\t")
         {
             _ = matrix ?? throw new ArgumentNullException(nameof(matrix));
+            _ = separator ?? throw new ArgumentNullException(nameof(separator));
 
-            return matrix.ToString((i, j, value) => value.ToString(), space);
+            return matrix.ToString((i, j, value) => value.ToString(), separator);
         }
 
-        public static string ToString<T>(this T[,] matrix, Func<int, int, T, string> stringSelector, char space = '\t')
+        public static string ToString<T>(this T[,] matrix, Func<int, int, T, string> stringSelector, string separator = "\t")
         {
             _ = matrix ?? throw new ArgumentNullException(nameof(matrix));
             _ = stringSelector ?? throw new ArgumentNullException(nameof(stringSelector));
-
+            _ = separator ?? throw new ArgumentNullException(nameof(separator));
+            
             var builder = new StringBuilder();
 
             for (var i = 0; i < matrix.GetLength(0); ++i)
             {
                 for (var j = 0; j < matrix.GetLength(1); ++j)
-                    builder.Append(stringSelector(i, j, matrix[i, j])).Append(space);
-                builder.Remove(builder.Length - 1, 1);
+                    builder.Append(stringSelector(i, j, matrix[i, j])).Append(separator);
+                builder.Remove(builder.Length - separator.Length, separator.Length);
                 builder.Append(Environment.NewLine);
             }
             builder.Remove(builder.Length - Environment.NewLine.Length, Environment.NewLine.Length);
