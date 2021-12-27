@@ -14,7 +14,7 @@ namespace NumericalMethods.Task3
 
         private readonly Lazy<double[,]> _unitMatrix;
 
-        private readonly Lazy<double[]> _eigenvector;
+        private readonly Lazy<double[]> _eigenVector;
 
         public ReverseIterationMethodEigenFinder(double[,] matrix)
         {
@@ -23,26 +23,23 @@ namespace NumericalMethods.Task3
             int minSize = Math.Min(matrix.GetLength(0), matrix.GetLength(1));
 
             _unitMatrix = new Lazy<double[,]>(() => Enumerable.Repeat(1.0, minSize).ToArray().GenerateDiagonalMatrix());
-            _eigenvector = new Lazy<double[]>(() => Enumerable.Repeat(1.0, minSize).ToArray());
+            _eigenVector = new Lazy<double[]>(() => Enumerable.Repeat(1.0, minSize).ToArray());
         }
 
         public IEnumerator<(IReadOnlyList<double> EigenVector, double MinEigenValue)> GetEnumerator()
         {
-            IReadOnlyList<double> eigenvector = (IReadOnlyList<double>)_eigenvector.Value.Clone();
+            IReadOnlyList<double> eigenVector = (IReadOnlyList<double>)_eigenVector.Value.Clone();
             double[,] matrixDecomposition = CholeskyAlgorithm.Decompose(_matrix);
-            double eigenvalue = 0;
+            double eigenValue = 0;
 
             while (true)
             {
-                IReadOnlyList<double> solution = MatrixDecompositionUtils.Solve(matrixDecomposition, eigenvector);
-                eigenvector = solution.GetMathNormalized();
+                IReadOnlyList<double> solution = MatrixDecompositionUtils.Solve(matrixDecomposition, eigenVector);
+                
+                eigenVector = solution.GetMathNormalized();
+                eigenValue = EigenUtils.GetEigenValueFromVector(_matrix, eigenVector); 
 
-                var numeratorMatrix = eigenvector.ToVectorRow().Multiplicate(_matrix).Multiplicate(eigenvector.ToVectorColumn());
-                var denumeratorMatrix = eigenvector.ToVectorRow().Multiplicate(eigenvector.ToVectorColumn());
-
-                eigenvalue = numeratorMatrix[0, 0] / denumeratorMatrix[0, 0];
-
-                yield return (eigenvector, eigenvalue);
+                yield return (eigenVector, eigenValue);
             }
         }
 

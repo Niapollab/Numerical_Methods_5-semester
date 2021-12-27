@@ -18,11 +18,12 @@ namespace NumericalMethods.Task3
             IRandomProvider<double> randomProvider = new WholeDoubleRandomProvider();
             
             IReadOnlyList<double> solutionEigenVector = randomProvider.Repeat(MatrixLength, 1, 10).ToArray();
-            double solutionMinEigenValue = solutionEigenVector.Min();
-
+            
             IInputParamsReader reader = new MockInputParamsReader(new InputParams(EigenValuesMatrixGenerator.Generate(solutionEigenVector), 1e-5, 1e-5, 100));
 
             InputParams inputParams = reader.Read();
+
+            double solutionMinEigenValue = EigenUtils.GetEigenValueFromVector(inputParams.Matrix, solutionEigenVector);
 
             Console.WriteLine($"Matrix:");
             Console.WriteLine(inputParams.Matrix.ToString(2));
