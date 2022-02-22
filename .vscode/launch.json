@@ -38,6 +38,17 @@
             "stopAtEntry": false
         },
         {
+            "name": "Launch Task 4",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/NumericalMethods.Task4/bin/Debug/net6.0-windows/NumericalMethods.Task4.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/NumericalMethods.Task4",
+            "console": "externalTerminal",
+            "stopAtEntry": false
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"
