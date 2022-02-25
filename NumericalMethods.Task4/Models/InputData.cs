@@ -21,13 +21,15 @@ namespace NumericalMethods.Task4.Models
 
         public IReadOnlyList<(double X, double Y)> CorruptedPoints { get; } 
         
-        public InputParams(Func<double, double> func, double a, double b, double h, IRandomProvider<double> randomProvider = default)
+        public InputParams(Func<double, double> func, double a, double b, double n, IRandomProvider<double> randomProvider = default)
         {
             Func = func ?? throw new ArgumentNullException(nameof(func));
             randomProvider ??= new DoubleRandomProvider();
 
             if (b < a)
                 (a, b) = (b, a);
+
+            double h = (b - a) / n;
 
             XValues = Enumerable
                 .Range(0, int.MaxValue)

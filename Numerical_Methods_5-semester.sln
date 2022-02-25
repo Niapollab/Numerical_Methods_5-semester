@@ -9,11 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumericalMethods.Task1.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumericalMethods.Core", "NumericalMethods.Core\NumericalMethods.Core.csproj", "{8BF68505-4AC8-463C-8039-840C21EB8426}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumericalMethods.Task2", "NumericalMethods.Task2\NumericalMethods.Task2.csproj", "{5585DE63-2B70-416D-BA31-1868A973CB1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumericalMethods.Task2", "NumericalMethods.Task2\NumericalMethods.Task2.csproj", "{5585DE63-2B70-416D-BA31-1868A973CB1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumericalMethods.Task3", "NumericalMethods.Task3\NumericalMethods.Task3.csproj", "{02CA1A76-51C3-4C36-9F58-BB8F871586F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumericalMethods.Task3", "NumericalMethods.Task3\NumericalMethods.Task3.csproj", "{02CA1A76-51C3-4C36-9F58-BB8F871586F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumericalMethods.Task4", "NumericalMethods.Task4\NumericalMethods.Task4.csproj", "{56434F3F-5A87-44CC-AE3F-A4326E02FA6A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumericalMethods.Task4", "NumericalMethods.Task4\NumericalMethods.Task4.csproj", "{56434F3F-5A87-44CC-AE3F-A4326E02FA6A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumericalMethods.UI", "NumericalMethods.UI\NumericalMethods.UI.csproj", "{13F85828-F7A3-4E8A-AF06-CB656F9EF57A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +99,18 @@ Global
 		{56434F3F-5A87-44CC-AE3F-A4326E02FA6A}.Release|x64.Build.0 = Release|Any CPU
 		{56434F3F-5A87-44CC-AE3F-A4326E02FA6A}.Release|x86.ActiveCfg = Release|Any CPU
 		{56434F3F-5A87-44CC-AE3F-A4326E02FA6A}.Release|x86.Build.0 = Release|Any CPU
+		{13F85828-F7A3-4E8A-AF06-CB656F9EF57A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13F85828-F7A3-4E8A-AF06-CB656F9EF57A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13F85828-F7A3-4E8A-AF06-CB656F9EF57A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{13F85828-F7A3-4E8A-AF06-CB656F9EF57A}.Debug|x64.Build.0 = Debug|Any CPU
+		{13F85828-F7A3-4E8A-AF06-CB656F9EF57A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{13F85828-F7A3-4E8A-AF06-CB656F9EF57A}.Debug|x86.Build.0 = Debug|Any CPU
+		{13F85828-F7A3-4E8A-AF06-CB656F9EF57A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13F85828-F7A3-4E8A-AF06-CB656F9EF57A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13F85828-F7A3-4E8A-AF06-CB656F9EF57A}.Release|x64.ActiveCfg = Release|Any CPU
+		{13F85828-F7A3-4E8A-AF06-CB656F9EF57A}.Release|x64.Build.0 = Release|Any CPU
+		{13F85828-F7A3-4E8A-AF06-CB656F9EF57A}.Release|x86.ActiveCfg = Release|Any CPU
+		{13F85828-F7A3-4E8A-AF06-CB656F9EF57A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

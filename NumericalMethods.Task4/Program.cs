@@ -6,6 +6,7 @@ using NumericalMethods.Task4.Interfaces;
 using NumericalMethods.Task4.Functions.LeastSquareMethod;
 using System.Collections.Generic;
 using System;
+using NumericalMethods.UI;
 
 namespace NumericalMethods.Task4
 {
@@ -19,8 +20,8 @@ namespace NumericalMethods.Task4
 
             return expectedSolution
                 .Zip(actualSolution)
-                .Select(p => p.First - p.Second)
-                .Average();
+                .Select(p => (p.First - p.Second) * (p.First - p.Second))
+                .Max();
         }
 
         static void Main()
@@ -60,7 +61,25 @@ namespace NumericalMethods.Task4
             double rootMeanSquareError = FindRootMeanSquareError(inputParams.YRealValues, approximationYValues);
 
             Console.Write($"Среднеквадратичная погрешность аппроксимации: {rootMeanSquareError}");
-            
+
+            ChartVisualiser.Run(
+                new ChartFunctionInfo(inputParams.RealPoints)
+                {
+                    Name = "Исходный график",
+                    Color = System.Drawing.Color.Green,
+                },
+                new ChartFunctionInfo(inputParams.CorruptedPoints)
+                {
+                    Name = "Испорченный график",
+                    Color = System.Drawing.Color.Red,
+                },
+                new ChartFunctionInfo(approximationPoints)
+                {
+                    Name = "Апроксимированный график",
+                    Color = System.Drawing.Color.Blue,
+                }
+            );
+
             Console.ReadKey(true);
         }
     }

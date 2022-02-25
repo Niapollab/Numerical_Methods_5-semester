@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NumericalMethods.Core\NumericalMethods.Core.csproj" />
+    <ProjectReference Include="..\NumericalMethods.UI\NumericalMethods.UI.csproj" />
   </ItemGroup>
 
 </Project>

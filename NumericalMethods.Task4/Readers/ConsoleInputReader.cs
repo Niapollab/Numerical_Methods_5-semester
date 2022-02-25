@@ -23,10 +23,10 @@ namespace NumericalMethods.Task4.Readers
         {
             double a = ReadDouble("Введите начало отрезка: ");
             double b = ReadDouble("Введите конец отрезка: ");
-            double hi = ReadDouble("Введите длину шага: ");
+            double n = ReadDouble("Введите число разбиений: ");
             IReadOnlyList<double> coefficients = ReadCoefficients();
 
-            return new InputParams(_funcBuilder.Build(coefficients), a, b, hi);
+            return new InputParams(_funcBuilder.Build(coefficients), a, b, n);
         }
 
         private IReadOnlyList<double> ReadCoefficients()
