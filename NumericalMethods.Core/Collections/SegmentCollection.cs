@@ -28,12 +28,15 @@ namespace NumericalMethods.Core.Collections
         private SegmentCollection(SortedSet<double> sortedSet)
             => _xAxis = new SortedSet<double>(sortedSet);
 
-        public IEnumerable<double> AddDots(int count)
+        public IReadOnlyList<double> AddDots(int count)
         {
             _ = count < 1 ? throw new ArgumentOutOfRangeException(nameof(count), "Dots count must be greater than one.") : true;
 
-            for(var i = 0; i < count; ++i)
-                yield return HalfSplitMaxSegment();
+            double[] addedDots = new double[count];
+            for (var i = 0; i < count; ++i)
+                addedDots[i] = HalfSplitMaxSegment();
+
+            return addedDots;
         }
 
         public IEnumerator<Segment> GetEnumerator()
@@ -43,7 +46,7 @@ namespace NumericalMethods.Core.Collections
             {
                 if (prevDot.HasValue)
                     yield return new Segment(prevDot.Value, dot);
-                
+
                 prevDot = dot;
             }
         }
@@ -54,7 +57,7 @@ namespace NumericalMethods.Core.Collections
         private double HalfSplitMaxSegment()
         {
             Segment maxSegment = this.MaxBy(s => s.Length);
-            
+
             double newDot = (maxSegment.Start + maxSegment.End) / 2;
             _xAxis.Add(newDot);
 

@@ -26,21 +26,26 @@ namespace NumericalMethods.Core.Collections
                 _yAxis.Add(x, _func(x));
         }
 
-        public IEnumerable<(double X, double Y)> AddPoints(int count)
+        public IReadOnlyList<(double X, double Y)> AddPoints(int count)
         {
             _ = count < 1 ? throw new ArgumentOutOfRangeException(nameof(count), "Points count must be greater than one.") : true;
 
-            IEnumerable<double> addedPoints = _xAxis.AddDots(count);
+            IReadOnlyList<double> addedDots = _xAxis.AddDots(count);
+            (double X, double Y)[] addedPoints = new (double X, double Y)[count];
 
-            foreach (double x in addedPoints)
+            for (var i = 0; i < count; ++i)
             {
+                double x = addedDots[i];
+
                 if (_yAxis.ContainsKey(x))
                     _yAxis[x] = _func(x);
                 else
                     _yAxis.Add(x, _func(x));
                 
-                yield return (x, _yAxis[x]);
+                addedPoints[i] = (x, _yAxis[x]);
             }
+
+            return addedPoints;
         }
 
         public IEnumerator<(double X, double Y)> GetEnumerator()
