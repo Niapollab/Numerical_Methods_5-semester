@@ -38,9 +38,9 @@ namespace NumericalMethods.Core.Collections
                     _yAxis[x] = _func(x);
                 else
                     _yAxis.Add(x, _func(x));
+                
+                yield return (x, _yAxis[x]);
             }
-
-            return addedPoints.Select(x => (x, _yAxis[x]));
         }
 
         public IEnumerator<(double X, double Y)> GetEnumerator()
