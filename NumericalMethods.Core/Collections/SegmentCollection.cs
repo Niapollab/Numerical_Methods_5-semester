@@ -4,15 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 using NumericalMethods.Core.Models;
 
-namespace NumericalMethods.Core.Utils
+namespace NumericalMethods.Core.Collections
 {
-    public class SegmentCollection : IEnumerable<Segment>, ICloneable
+    public class SegmentCollection : IReadOnlyCollection<Segment>, ICloneable
     {
         private readonly SortedSet<double> _xAxis;
 
-        public double Count => _xAxis.Count - 1;
+        public IReadOnlyCollection<double> Dots => _xAxis;
 
-        public IReadOnlyCollection<double> Points => _xAxis;
+        public int Count => _xAxis.Count - 1;
 
         public SegmentCollection(double start, double end)
         {
@@ -28,9 +28,9 @@ namespace NumericalMethods.Core.Utils
         private SegmentCollection(SortedSet<double> sortedSet)
             => _xAxis = new SortedSet<double>(sortedSet);
 
-        public IEnumerable<double> AddPoints(int count)
+        public IEnumerable<double> AddDots(int count)
         {
-            _ = count < 1 ? throw new ArgumentOutOfRangeException(nameof(count), "Points count must be greater than one.") : true;
+            _ = count < 1 ? throw new ArgumentOutOfRangeException(nameof(count), "Dots count must be greater than one.") : true;
 
             for(var i = 0; i < count; ++i)
                 yield return HalfSplitMaxSegment();
@@ -38,13 +38,13 @@ namespace NumericalMethods.Core.Utils
 
         public IEnumerator<Segment> GetEnumerator()
         {
-            double? prevPoint = null;
-            foreach (double point in _xAxis)
+            double? prevDot = null;
+            foreach (double dot in _xAxis)
             {
-                if (prevPoint.HasValue)
-                    yield return new Segment(prevPoint.Value, point);
+                if (prevDot.HasValue)
+                    yield return new Segment(prevDot.Value, dot);
                 
-                prevPoint = point;
+                prevDot = dot;
             }
         }
 
@@ -55,10 +55,10 @@ namespace NumericalMethods.Core.Utils
         {
             Segment maxSegment = this.MaxBy(s => s.Length);
             
-            double newPoint = (maxSegment.Start + maxSegment.End) / 2;
-            _xAxis.Add(newPoint);
+            double newDot = (maxSegment.Start + maxSegment.End) / 2;
+            _xAxis.Add(newDot);
 
-            return newPoint;
+            return newDot;
         }
 
         public object Clone()
