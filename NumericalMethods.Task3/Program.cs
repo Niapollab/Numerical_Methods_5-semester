@@ -15,7 +15,7 @@ namespace NumericalMethods.Task3
         static void Main()
         {
             const int MatrixLength = 3;
-            IRandomProvider<double> randomProvider = new WholeDoubleRandomProvider();
+            IRangedRandomProvider<double> randomProvider = new WholeDoubleRandomProvider();
             
             IReadOnlyList<double> solutionEigenVector = randomProvider.Repeat(MatrixLength, 1, 10).ToArray();
             

@@ -12,7 +12,7 @@ namespace NumericalMethods.Task1
     {
         const double NonZeroEps = 1e-5;
 
-        static readonly IRandomProvider<double> _random = new DoubleRandomProvider(NonZeroEps).NotDefault();
+        static readonly IRangedRandomProvider<double> _random = ((IRangedRandomProvider<double>)new DoubleRandomProvider(NonZeroEps)).NotDefault();
 
         static (double UnitAccuracy, double RandomAccuracy) FindAccuracies(int count, double minValue, double maxValue)
         {

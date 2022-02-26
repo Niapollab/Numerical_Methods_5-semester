@@ -16,6 +16,14 @@ namespace NumericalMethods.Core.Extensions
             return new NotDefaultValueRandomProvider<T>(randomProvider);
         }
 
+        public static IRangedRandomProvider<T> NotDefault<T>(this IRangedRandomProvider<T> randomProvider, IEqualityComparer<T> comparer = null)
+        {
+            _ = randomProvider ?? throw new ArgumentNullException(nameof(randomProvider));
+            comparer = comparer ?? EqualityComparer<T>.Default;
+            
+            return new NotDefaultValueRangedRandomProvider<T>(randomProvider);
+        }
+
         public static IEnumerable<T> Repeat<T>(this IRandomProvider<T> randomProvider, int count)
         {
             _ = randomProvider ?? throw new ArgumentNullException(nameof(randomProvider));
@@ -24,7 +32,7 @@ namespace NumericalMethods.Core.Extensions
             return Enumerable.Range(0, count).Select(x => randomProvider.Next());
         }
 
-        public static IEnumerable<T> Repeat<T>(this IRandomProvider<T> randomProvider, int count, T minValue, T maxValue)
+        public static IEnumerable<T> Repeat<T>(this IRangedRandomProvider<T> randomProvider, int count, T minValue, T maxValue)
         {
             _ = randomProvider ?? throw new ArgumentNullException(nameof(randomProvider));
             _ = count < 0 ? throw new ArgumentNullException("The number of repetitions must be positive.", nameof(count)) : true;

@@ -12,7 +12,7 @@ namespace NumericalMethods.Task2
 
         public int HalfRibbonLength { get; }
 
-        public TestCase(IRandomProvider<int> random, int matrixLength, double minValue, double maxValue)
+        public TestCase(IRangedRandomProvider<int> random, int matrixLength, double minValue, double maxValue)
         {
             MatrixLength = matrixLength;
             MinValue = minValue;

@@ -5,7 +5,7 @@ namespace NumericalMethods.Task3
 {
     static class RandomProviderExtensions
     {
-        public static T[,] GenerateSymmetricMatrix<T>(this IRandomProvider<T> random, int rowsCount, int columnsCount, T minValue, T maxValue)
+        public static T[,] GenerateSymmetricMatrix<T>(this IRangedRandomProvider<T> random, int rowsCount, int columnsCount, T minValue, T maxValue)
         {
             _ = random ?? throw new ArgumentNullException(nameof(random));
             _ = rowsCount < 0 ? throw new ArgumentOutOfRangeException(nameof(rowsCount), "The number of rows must not be negative.") : true;

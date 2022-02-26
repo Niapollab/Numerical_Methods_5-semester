@@ -3,7 +3,7 @@ using NumericalMethods.Core.Utils.Interfaces;
 
 namespace NumericalMethods.Core.Utils.RandomProviders
 {
-    public class WholeDoubleRandomProvider : IRandomProvider<double>
+    public class WholeDoubleRandomProvider : IRandomProvider<double>, IRangedRandomProvider<double>
     {
         private readonly DoubleRandomProvider _provider;
 

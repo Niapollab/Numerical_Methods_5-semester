@@ -11,9 +11,9 @@ namespace NumericalMethods.Task2
 {
     class Program
     {
-        private static readonly IRandomProvider<int> _intRandom = new IntegerRandomProvider();
+        private static readonly IRangedRandomProvider<int> _intRandom = new IntegerRandomProvider();
 
-        private static readonly IRandomProvider<double> _doubleRandom = new DoubleRandomProvider();
+        private static readonly IRangedRandomProvider<double> _doubleRandom = new DoubleRandomProvider();
         
         const double NonZeroEps = 1e-5;
 

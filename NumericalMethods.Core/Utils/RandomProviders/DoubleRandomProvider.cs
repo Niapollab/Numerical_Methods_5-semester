@@ -4,7 +4,7 @@ using NumericalMethods.Core.Utils.Interfaces;
 
 namespace NumericalMethods.Core.Utils.RandomProviders
 {
-    public class DoubleRandomProvider : IRandomProvider<double>
+    public class DoubleRandomProvider : IRandomProvider<double>, IRangedRandomProvider<double>
     {
         private readonly Random _random;
 

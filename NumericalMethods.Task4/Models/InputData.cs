@@ -21,7 +21,7 @@ namespace NumericalMethods.Task4.Models
 
         public IReadOnlyList<(double X, double Y)> CorruptedPoints { get; } 
         
-        public InputParams(Func<double, double> func, double a, double b, double n, IRandomProvider<double> randomProvider = default)
+        public InputParams(Func<double, double> func, double a, double b, double n, IRangedRandomProvider<double> randomProvider = default)
         {
             Func = func ?? throw new ArgumentNullException(nameof(func));
             randomProvider ??= new DoubleRandomProvider();
