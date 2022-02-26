@@ -8,18 +8,37 @@ namespace NumericalMethods.Core.Extensions
 {
     public static class RandomProviderExtensions
     {
-        public static IRandomProvider<T> NotDefault<T>(this IRandomProvider<T> randomProvider, IEqualityComparer<T> comparer = null)
+        public static RandomProviderWithStaticRanges<T> InRange<T>(this IRandomProvider<T> randomProvider, T minValue, T maxValue, IComparer<T> comparer = null)
         {
             _ = randomProvider ?? throw new ArgumentNullException(nameof(randomProvider));
-            comparer = comparer ?? EqualityComparer<T>.Default;
+
+            return new RandomProviderWithStaticRanges<T>(randomProvider, minValue, maxValue, comparer);
+        }
+
+        public static RandomProviderWithStaticRanges<T> InRange<T>(this IRandomProvider<T> randomProvider, T minValue, T maxValue, Comparison<T> comparison)
+        {
+            _ = randomProvider ?? throw new ArgumentNullException(nameof(randomProvider));
+
+            return new RandomProviderWithStaticRanges<T>(randomProvider, minValue, maxValue, comparison); 
+        }
+
+        public static RangeRandomProviderAdapter<T> InRange<T>(this IRangedRandomProvider<T> randomProvider, T minValue, T maxValue)
+        {
+            _ = randomProvider ?? throw new ArgumentNullException(nameof(randomProvider));
+
+            return new RangeRandomProviderAdapter<T>(randomProvider, minValue, maxValue);
+        }
+
+        public static NotDefaultValueRandomProvider<T> NotDefault<T>(this IRandomProvider<T> randomProvider, IEqualityComparer<T> comparer = null)
+        {
+            _ = randomProvider ?? throw new ArgumentNullException(nameof(randomProvider));
             
             return new NotDefaultValueRandomProvider<T>(randomProvider);
         }
 
-        public static IRangedRandomProvider<T> NotDefault<T>(this IRangedRandomProvider<T> randomProvider, IEqualityComparer<T> comparer = null)
+        public static NotDefaultValueRangedRandomProvider<T> NotDefault<T>(this IRangedRandomProvider<T> randomProvider, IEqualityComparer<T> comparer = null)
         {
             _ = randomProvider ?? throw new ArgumentNullException(nameof(randomProvider));
-            comparer = comparer ?? EqualityComparer<T>.Default;
             
             return new NotDefaultValueRangedRandomProvider<T>(randomProvider);
         }

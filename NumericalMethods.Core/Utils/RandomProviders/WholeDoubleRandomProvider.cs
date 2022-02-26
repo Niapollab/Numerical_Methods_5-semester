@@ -5,11 +5,11 @@ namespace NumericalMethods.Core.Utils.RandomProviders
 {
     public class WholeDoubleRandomProvider : IRandomProvider<double>, IRangedRandomProvider<double>
     {
-        private readonly DoubleRandomProvider _provider;
+        private readonly DoubleRandomProvider _randomProvider;
 
-        public WholeDoubleRandomProvider(DoubleRandomProvider provider = null)
+        public WholeDoubleRandomProvider(DoubleRandomProvider randomProvider = null)
         {
-            _provider = provider ?? new DoubleRandomProvider();
+            _randomProvider = randomProvider ?? new DoubleRandomProvider();
         }
 
         public WholeDoubleRandomProvider(double eps)
@@ -19,12 +19,12 @@ namespace NumericalMethods.Core.Utils.RandomProviders
 
         public double Next()
         {
-            return Math.Truncate(_provider.Next());
+            return Math.Truncate(_randomProvider.Next());
         }
 
         public double Next(double minValue, double maxValue)
         {
-            return Math.Truncate(_provider.Next(minValue, maxValue));
+            return Math.Truncate(_randomProvider.Next(minValue, maxValue));
         }
     }
 }

@@ -6,13 +6,13 @@ namespace NumericalMethods.Core.Utils.RandomProviders
 {
     public class NotDefaultValueRangedRandomProvider<T> : IRangedRandomProvider<T>
     {
-        private readonly IRangedRandomProvider<T> _provider;
+        private readonly IRangedRandomProvider<T> _randomProvider;
 
         private readonly IEqualityComparer<T> _comparer;
 
-        internal NotDefaultValueRangedRandomProvider(IRangedRandomProvider<T> provider, IEqualityComparer<T> comparer = null)
+        internal NotDefaultValueRangedRandomProvider(IRangedRandomProvider<T> randomProvider, IEqualityComparer<T> comparer = null)
         {
-            _provider = provider ?? throw new ArgumentNullException(nameof(provider));
+            _randomProvider = randomProvider ?? throw new ArgumentNullException(nameof(randomProvider));
             _comparer = comparer ?? EqualityComparer<T>.Default;
         }
 
@@ -20,7 +20,7 @@ namespace NumericalMethods.Core.Utils.RandomProviders
         {
             T value;
             do
-                value = _provider.Next(minValue, maxValue);
+                value = _randomProvider.Next(minValue, maxValue);
             while (_comparer.Equals(value, default));
 
             return value;
