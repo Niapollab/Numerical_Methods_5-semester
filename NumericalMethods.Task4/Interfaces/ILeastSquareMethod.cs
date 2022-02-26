@@ -4,6 +4,6 @@ namespace NumericalMethods.Task4.Interfaces
 {
     interface ILeastSquareMethod<T>
     {
-        IReadOnlyList<T> FindApproximationCoefficients(IReadOnlyList<(T X, T Y)> points);
+        IReadOnlyList<T> FindApproximationCoefficients(IReadOnlyCollection<(T X, T Y)> points);
     }
 }

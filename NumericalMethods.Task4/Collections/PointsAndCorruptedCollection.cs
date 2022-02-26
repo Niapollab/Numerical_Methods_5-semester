@@ -41,10 +41,10 @@ namespace NumericalMethods.Task4.Collections
         {
             _ = count < 1 ? throw new ArgumentOutOfRangeException(nameof(count), "Points count must be greater than one.") : true;
 
-            _pointCollection.AddPoints(count);
+            var addedPoints = _pointCollection.AddPoints(count);
 
             (double minValue, double maxValue) = GetRandomRange();
-            foreach ((double X, double Y) point in _pointCollection)
+            foreach ((double X, double Y) point in addedPoints)
             {
                 var correptedYValue = point.Y + _randomProvider.Next(minValue, maxValue);
                 if (_corruptedDict.ContainsKey(point.X))

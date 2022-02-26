@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using NumericalMethods.Core.Utils.Interfaces;
-using NumericalMethods.Core.Utils.RandomProviders;
 using NumericalMethods.Task4.Interfaces;
 using NumericalMethods.Task4.Models;
 
@@ -9,24 +7,14 @@ namespace NumericalMethods.Task4.Readers
 {
     class ConsoleInputReader : IInputParamsReader
     {
-        private readonly IFuncBuilder<double> _funcBuilder;
-
-        private readonly IRandomProvider<double> _randomProvider;
-
-        public ConsoleInputReader(IFuncBuilder<double> funcBuilder, IRandomProvider<double> randomProvider = null)
-        {
-            _funcBuilder = funcBuilder ?? throw new ArgumentNullException(nameof(funcBuilder));
-            _randomProvider = randomProvider ?? new DoubleRandomProvider();
-        }
-
         public InputParams Read()
         {
             double a = ReadDouble("Введите начало отрезка: ");
             double b = ReadDouble("Введите конец отрезка: ");
-            double n = ReadDouble("Введите число разбиений: ");
+            int n = ReadInt("Введите число разбиений: ");
             IReadOnlyList<double> coefficients = ReadCoefficients();
 
-            return new InputParams(_funcBuilder.Build(coefficients), a, b, n);
+            return new InputParams(a, b, n, coefficients);
         }
 
         private IReadOnlyList<double> ReadCoefficients()
@@ -60,6 +48,17 @@ namespace NumericalMethods.Task4.Readers
                 Console.Write(message);
                 
                 if (double.TryParse(Console.ReadLine(), out var number))
+                    return number;
+            } while (true);
+        }
+
+        private int ReadInt(string message)
+        {
+            do
+            {
+                Console.Write(message);
+                
+                if (int.TryParse(Console.ReadLine(), out var number))
                     return number;
             } while (true);
         }

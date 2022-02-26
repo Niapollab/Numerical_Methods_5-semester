@@ -8,7 +8,7 @@ namespace NumericalMethods.Task4.Functions.LeastSquareMethod
 {
     class SecondDegreePolynomSquareMethod : ILeastSquareMethod<double>
     {
-        public IReadOnlyList<double> FindApproximationCoefficients(IReadOnlyList<(double X, double Y)> points)
+        public IReadOnlyList<double> FindApproximationCoefficients(IReadOnlyCollection<(double X, double Y)> points)
         {
             _ = points ?? throw new ArgumentNullException(nameof(points));
             

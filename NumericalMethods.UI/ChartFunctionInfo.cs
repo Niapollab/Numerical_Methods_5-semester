@@ -10,7 +10,7 @@ namespace NumericalMethods.UI
     {
         private readonly int _borderWidth = 2;
 
-        public IReadOnlyList<(double X, double Y)> Points { get; }
+        public IReadOnlyCollection<(double X, double Y)> Points { get; }
 
         private readonly Color _color = Color.Blue;
         public Color Color {
@@ -39,7 +39,7 @@ namespace NumericalMethods.UI
 
         public ChartDashStyle ChartDashStyle { get; init; } = ChartDashStyle.Solid;
 
-        public ChartFunctionInfo(Func<double, double> func, IReadOnlyList<double> xAxis)
+        public ChartFunctionInfo(Func<double, double> func, IReadOnlyCollection<double> xAxis)
         {
             _ = func ?? throw new ArgumentNullException(nameof(func));
             _ = xAxis ?? throw new ArgumentNullException(nameof(xAxis));
@@ -48,7 +48,7 @@ namespace NumericalMethods.UI
             Points = xAxis.Zip(yAsix).ToArray();
         }
 
-        public ChartFunctionInfo(IReadOnlyList<(double X, double Y)> points)
+        public ChartFunctionInfo(IReadOnlyCollection<(double X, double Y)> points)
         {
             Points = points ?? throw new ArgumentNullException(nameof(points));
         }

@@ -1,64 +1,27 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using NumericalMethods.Core.Utils.RandomProviders;
-using NumericalMethods.Core.Utils.Interfaces;
-using NumericalMethods.Core.Extensions;
 
 namespace NumericalMethods.Task4.Models
 {
     class InputParams
     {
-        public Func<double, double> Func { get; }
+        public IReadOnlyList<double> Coefficients { get; }
         
-        public IReadOnlyList<double> XValues { get; }
+        public double SegmentStart { get; } 
 
-        public IReadOnlyList<double> YRealValues { get; }
+        public double SegmentEnd { get; } 
 
-        public IReadOnlyList<double> YCorruptedValues { get; }
-
-        public IReadOnlyList<(double X, double Y)> RealPoints { get; }
-
-        public IReadOnlyList<(double X, double Y)> CorruptedPoints { get; } 
+        public int SegmentCount{ get; } 
         
-        public InputParams(Func<double, double> func, double a, double b, double n, IRangedRandomProvider<double> randomProvider = default)
+        public InputParams(double segmentStart, double segmentEnd, int segmentCount, IReadOnlyList<double> coefficients)
         {
-            Func = func ?? throw new ArgumentNullException(nameof(func));
-            randomProvider ??= new DoubleRandomProvider();
-
-            if (b < a)
-                (a, b) = (b, a);
-
-            double h = (b - a) / n;
-
-            XValues = Enumerable
-                .Range(0, int.MaxValue)
-                .Select(i => a + h * i)
-                .TakeWhile(x => x <= b)
-                .ToArray();
-
-            YRealValues = XValues
-                .Select(x => Func(x))
-                .ToArray();
-
-            double d = YRealValues.Max() * 0.2;
+            _ = segmentStart > segmentEnd ? throw new ArgumentException("End of segment must be greater than start.") : true;
+            _ = segmentCount < 1 ? throw new ArgumentException("Segments count must be greater than zero.") : true;
+            Coefficients = coefficients ?? throw new ArgumentNullException(nameof(coefficients));
             
-            IReadOnlyList<double> corruption = randomProvider
-                .Repeat(YRealValues.Count, -d / 2, d / 2)
-                .ToArray();
-
-            YCorruptedValues = YRealValues
-                .Zip(corruption)
-                .Select(p => p.First * p.Second)
-                .ToArray();
-
-            RealPoints = XValues
-                .Zip(YRealValues)
-                .ToArray();
-
-            CorruptedPoints = XValues
-                .Zip(YCorruptedValues)
-                .ToArray();
+            SegmentStart = segmentStart;
+            SegmentEnd = segmentEnd;
+            SegmentCount = segmentCount;
         }
     }
 }
