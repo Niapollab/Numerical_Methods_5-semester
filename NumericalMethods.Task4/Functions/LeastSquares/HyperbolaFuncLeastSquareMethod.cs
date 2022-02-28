@@ -15,7 +15,7 @@ namespace NumericalMethods.Task4.Functions.LeastSquareMethod
             double oneDivXSum = points.Select(p => 1 / p.X).Sum();
             double ySum = points.Select(p => p.Y).Sum();
             double oneDivSqrXSum = points.Select(p => 1 / (p.X * p.X)).Sum();
-            double yDivx = points.Select(p => p.Y / p.X).Sum();
+            double yDivXSum = points.Select(p => p.Y / p.X).Sum();
 
             double [,] leftSide = 
             {
@@ -25,7 +25,7 @@ namespace NumericalMethods.Task4.Functions.LeastSquareMethod
             IReadOnlyList<double> rightSide = new[]
             {
                 ySum,
-                yDivx
+                yDivXSum
             };
 
             return SweepAlgorithm.Calculate(leftSide, rightSide);
