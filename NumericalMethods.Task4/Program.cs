@@ -66,7 +66,7 @@ namespace NumericalMethods.Task4
 
             List<Task<DialogResult>> tasks = new List<Task<DialogResult>>();
             var pointsAndCorruptedCollection = new PointsAndCorruptedCollection(funcBuilder.Build(inputParams.Coefficients), inputParams.SegmentStart, inputParams.SegmentEnd, RandomProvider);
-            for (int i = 0; i < 3; ++i)
+            for (var i = 0; i < 3; ++i)
             {
                 int segmentCount = pointsAndCorruptedCollection.CorruptedPoints.Count - 1;
                 pointsAndCorruptedCollection.AddPoints((inputParams.SegmentCount * (int)Math.Pow(10, i)) - segmentCount);

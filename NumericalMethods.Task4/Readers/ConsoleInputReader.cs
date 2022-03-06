@@ -49,6 +49,8 @@ namespace NumericalMethods.Task4.Readers
                 
                 if (double.TryParse(Console.ReadLine(), out var number))
                     return number;
+                else
+                    Console.WriteLine("Не удалось распознать введенное значение. Повторите попытку ввода.");
             } while (true);
         }
 
@@ -60,6 +62,8 @@ namespace NumericalMethods.Task4.Readers
                 
                 if (int.TryParse(Console.ReadLine(), out var number))
                     return number;
+                else
+                    Console.WriteLine("Не удалось распознать введенное значение. Повторите попытку ввода.");
             } while (true);
         }
     }
