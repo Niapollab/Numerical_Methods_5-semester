@@ -54,6 +54,13 @@ namespace NumericalMethods.Task5
                     Func<double, double> interpolationErrorFunc = BuildInterpolationErrorFunc(originalFunc, interpolatedFunc);
 
                     IReadOnlyList<(double X, double Y)> originalTestPoints = testDots.Dots.ToPoints(originalFunc);
+
+                    if (originalTestPoints.Any(p => !double.IsFinite(p.Y)))
+                    {
+                        Console.WriteLine("Невозможно построить график, на отрезке существует точка которая обращается в 0.");
+                        return;
+                    }
+
                     IReadOnlyList<(double X, double Y)> interpolatedTestPoints = testDots.Dots.ToPoints(interpolatedFunc);
                     IReadOnlyList<(double X, double Y)> errorTestPoints = testDots.Dots.ToPoints(interpolationErrorFunc);
 
