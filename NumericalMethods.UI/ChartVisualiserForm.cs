@@ -27,7 +27,7 @@ namespace NumericalMethods.UI
             _needDrawLegend = functionsInfo.Any(info => !string.IsNullOrEmpty(info.Name));
 
             _chart = BuildChart();
-            _seriesEnabledController = new SeriesEnabledController(_chart.Series);
+            _seriesEnabledController = new SeriesEnabledController(_chart.Series, _chart.ChartAreas[0].RecalculateAxesScale);
             Controls.Add(_chart);
 
             _chart.KeyDown += CtrlSEntered;
