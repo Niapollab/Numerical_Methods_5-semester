@@ -10,9 +10,12 @@ namespace NumericalMethods.UI
 
         private readonly OptionSwitcher _optionSwitcher;
 
-        public SeriesEnabledController(IReadOnlyList<Series> series, bool needLoopOptions = true)
+        private readonly Action _recalculateAxesScale;
+
+        public SeriesEnabledController(IReadOnlyList<Series> series, Action recalculateAxesScale = null, bool needLoopOptions = true)
         {
             _series = series ?? throw new ArgumentNullException(nameof(series));
+            _recalculateAxesScale = recalculateAxesScale; 
 
             _optionSwitcher = _series.Count >= 2
                 ? new OptionSwitcher(_series.Count + 1)
@@ -29,6 +32,8 @@ namespace NumericalMethods.UI
             
             if (!allEnabled)
                 _series[operationId - 1].Enabled = true;
+            
+            _recalculateAxesScale?.Invoke();
         }
 
         public void SwitchNext()
