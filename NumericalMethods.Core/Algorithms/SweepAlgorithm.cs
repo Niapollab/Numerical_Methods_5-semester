@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using NumericalMethods.Core.RandomAccess.Extensions;
+using NumericalMethods.Core.Extensions;
 
 namespace NumericalMethods.Core.Algorithms
 {

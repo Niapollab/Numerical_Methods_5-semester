@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NumericalMethods.Core.RandomAccess.Extensions
+namespace NumericalMethods.Core.Extensions
 {
     public static class StructGetValueExtensions
     {
