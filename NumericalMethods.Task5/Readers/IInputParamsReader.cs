@@ -2,7 +2,7 @@ using NumericalMethods.Task5.Models;
 
 namespace NumericalMethods.Task5.Readers
 {
-    interface IInputParamsReader
+    public interface IInputParamsReader
     {
         InputParams Read();
     }

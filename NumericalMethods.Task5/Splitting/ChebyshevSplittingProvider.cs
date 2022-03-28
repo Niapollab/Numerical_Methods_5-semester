@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace NumericalMethods.Task5.Splitting
 {
-    class ChebyshevSplittingProvider : ISplittingProvider
+    public class ChebyshevSplittingProvider : ISplittingProvider
     {
         public IReadOnlyList<double> Split(int segmentsCount, double segmentStart, double segmentEnd)
         {

@@ -3,7 +3,7 @@ using NumericalMethods.Task5.Models;
 
 namespace NumericalMethods.Task5.Readers
 {
-    class ConsoleInputReader : IInputParamsReader
+    public class ConsoleInputReader : IInputParamsReader
     {
         public InputParams Read()
         {

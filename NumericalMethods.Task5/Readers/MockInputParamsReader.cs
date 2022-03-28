@@ -3,7 +3,7 @@ using NumericalMethods.Task5.Models;
 
 namespace NumericalMethods.Task5.Readers
 {
-    class MockInputParamsReader : IInputParamsReader
+    public class MockInputParamsReader : IInputParamsReader
     {
         private readonly InputParams _inputParams;
 

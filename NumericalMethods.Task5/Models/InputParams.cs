@@ -2,7 +2,7 @@ using System;
 
 namespace NumericalMethods.Task5.Models
 {
-    class InputParams
+    public class InputParams
     {        
         public double SegmentStart { get; } 
 

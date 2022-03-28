@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace NumericalMethods.Task5.Splitting
 {
-    class UniformSplittingProvider : ISplittingProvider
+    public class UniformSplittingProvider : ISplittingProvider
     {
         public IReadOnlyList<double> Split(int segmentsCount, double segmentStart, double segmentEnd)
         {
