@@ -71,6 +71,17 @@
             "stopAtEntry": false
         },
         {
+            "name": "Launch Task 7",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/NumericalMethods.Task7/bin/Debug/net6.0-windows/NumericalMethods.Task7.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/NumericalMethods.Task7",
+            "console": "externalTerminal",
+            "stopAtEntry": false
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"
