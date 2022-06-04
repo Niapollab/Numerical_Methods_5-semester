@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NumericalMethods.UI", "Nume
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumericalMethods.Task5", "NumericalMethods.Task5\NumericalMethods.Task5.csproj", "{522F887B-5AF7-49B0-92D6-9783D95D4683}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumericalMethods.Task8", "NumericalMethods.Task8\NumericalMethods.Task8.csproj", "{08A72235-1F73-489C-A345-D57936703148}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,18 @@ Global
 		{522F887B-5AF7-49B0-92D6-9783D95D4683}.Release|x64.Build.0 = Release|Any CPU
 		{522F887B-5AF7-49B0-92D6-9783D95D4683}.Release|x86.ActiveCfg = Release|Any CPU
 		{522F887B-5AF7-49B0-92D6-9783D95D4683}.Release|x86.Build.0 = Release|Any CPU
+		{08A72235-1F73-489C-A345-D57936703148}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08A72235-1F73-489C-A345-D57936703148}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08A72235-1F73-489C-A345-D57936703148}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{08A72235-1F73-489C-A345-D57936703148}.Debug|x64.Build.0 = Debug|Any CPU
+		{08A72235-1F73-489C-A345-D57936703148}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{08A72235-1F73-489C-A345-D57936703148}.Debug|x86.Build.0 = Debug|Any CPU
+		{08A72235-1F73-489C-A345-D57936703148}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08A72235-1F73-489C-A345-D57936703148}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08A72235-1F73-489C-A345-D57936703148}.Release|x64.ActiveCfg = Release|Any CPU
+		{08A72235-1F73-489C-A345-D57936703148}.Release|x64.Build.0 = Release|Any CPU
+		{08A72235-1F73-489C-A345-D57936703148}.Release|x86.ActiveCfg = Release|Any CPU
+		{08A72235-1F73-489C-A345-D57936703148}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
