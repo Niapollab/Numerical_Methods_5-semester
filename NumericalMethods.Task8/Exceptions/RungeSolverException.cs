@@ -2,7 +2,7 @@ using System;
 
 namespace NumericalMethods.Task8.Exceptions
 {
-    class RungeSolverException : Exception
+    public class RungeSolverException : Exception
     {
         public int IterationNumber { get; }
 

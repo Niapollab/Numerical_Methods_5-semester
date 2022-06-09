@@ -19,11 +19,11 @@ namespace NumericalMethods.Task8
             const double Z0 = 2 * Math.E;
             const double Eps = 0.01;
 
-            var solver = new RungeSolver(Y0, Z0, YDerivative, ZDerivative);
+            var solver = new RungeSolver(YDerivative, ZDerivative);
             try
             {
                 IReadOnlyList<IReadOnlyList<(double X, double Y, double Z)>> solutions = solver
-                    .EnumerateSolutions(SegmentStart, SegmentEnd, SegmentsCount, Eps)
+                    .EnumerateSolutions(Y0, Z0, SegmentStart, SegmentEnd, SegmentsCount, Eps)
                     .ToArray();
 
                 IReadOnlyList<IReadOnlyList<(double X, double Y)>> ySolutions = solutions.Select(l => l.Select(p => (p.X, p.Y)).ToArray()).ToArray();

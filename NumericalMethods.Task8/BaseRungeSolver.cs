@@ -4,27 +4,21 @@ using NumericalMethods.Task8.Exceptions;
 
 namespace NumericalMethods.Task8
 {
-    abstract class BaseRungeSolver
+    public abstract class BaseRungeSolver
     {
         protected const double MaxSegmentsCount = 64e6;
-
-        protected readonly double _y0;
-
-        protected readonly double _z0;
 
         protected readonly Func<(double X, double Y, double Z), double> _yDerivative;
 
         protected readonly Func<(double X, double Y, double Z), double> _zDerivative;
 
-        public BaseRungeSolver(double y0, double z0, Func<(double X, double Y, double Z), double> yDerivative, Func<(double X, double Y, double Z), double> zDerivative)
+        public BaseRungeSolver( Func<(double X, double Y, double Z), double> yDerivative, Func<(double X, double Y, double Z), double> zDerivative)
         {
-            _y0 = y0;
-            _z0 = z0;
             _yDerivative = yDerivative ?? throw new ArgumentNullException(nameof(yDerivative));
             _zDerivative = zDerivative ?? throw new ArgumentNullException(nameof(zDerivative));
         }
 
-        public IEnumerable<IReadOnlyList<(double X, double Y, double Z)>> EnumerateSolutions(double segmentStart, double segmentEnd, int segmentsCount, double eps)
+        public virtual IEnumerable<IReadOnlyList<(double X, double Y, double Z)>> EnumerateSolutions(double y0, double z0, double segmentStart, double segmentEnd, int segmentsCount, double eps)
         {
             if (segmentStart > segmentEnd)
                 (segmentStart, segmentEnd) = (segmentEnd, segmentStart);
@@ -32,7 +26,7 @@ namespace NumericalMethods.Task8
             if (segmentsCount > MaxSegmentsCount)
                 throw new RungeSolverException(0, "The number of segments has reached its maximum value. Step too small.");
 
-            (double X, double Y, double Z) startPoint = (segmentStart, _y0, _z0);
+            (double X, double Y, double Z) startPoint = (segmentStart, y0, z0);
 
             double step = GetSegmentDeltaStep(segmentStart, segmentEnd, segmentsCount);
             IReadOnlyList<(double X, double Y, double Z)> currentSolution = FindSolutions(startPoint, segmentsCount, step);

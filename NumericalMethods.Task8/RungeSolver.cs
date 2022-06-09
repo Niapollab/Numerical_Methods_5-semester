@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace NumericalMethods.Task8
 {
-    class RungeSolver : BaseRungeSolver
+    public class RungeSolver : BaseRungeSolver
     {
         public const int Power = 4;
 
-        public RungeSolver(double y0, double z0, Func<(double X, double Y, double Z), double> yDerivative, Func<(double X, double Y, double Z), double> zDerivative) : base(y0, z0, yDerivative, zDerivative)
+        public RungeSolver(Func<(double X, double Y, double Z), double> yDerivative, Func<(double X, double Y, double Z), double> zDerivative) : base(yDerivative, zDerivative)
         {
         }
 
@@ -39,7 +39,7 @@ namespace NumericalMethods.Task8
                 double y = prevSolution.Y + (k1 + 2 * k2 + 2 * k3 + k4) / 6;
                 double z = prevSolution.Z + (l1 + 2 * l2 + 2 * l3 + l4) / 6;
 
-                solutions.Add((x, y, z));
+                solutions.Add((GetDotByIndex(point.X, i, step), y, z));
             }
 
             return solutions;
