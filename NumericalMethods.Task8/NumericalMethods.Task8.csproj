@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+			<_Parameter1>$(AssemblyName).Tests</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NumericalMethods.Core\NumericalMethods.Core.csproj" />
+    <ProjectReference Include="..\NumericalMethods.UI\NumericalMethods.UI.csproj" />
+    <ProjectReference Include="..\NumericalMethods.Task5\NumericalMethods.Task5.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -82,6 +82,17 @@
             "stopAtEntry": false
         },
         {
+            "name": "Launch Task 8",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/NumericalMethods.Task8/bin/Debug/net6.0-windows/NumericalMethods.Task8.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/NumericalMethods.Task8",
+            "console": "externalTerminal",
+            "stopAtEntry": false
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"
