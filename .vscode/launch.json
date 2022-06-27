@@ -93,6 +93,28 @@
             "stopAtEntry": false
         },
         {
+            "name": "Launch Task 9",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/NumericalMethods.Task9/bin/Debug/net6.0-windows/NumericalMethods.Task9.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/NumericalMethods.Task9",
+            "console": "externalTerminal",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Launch Task 10",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/NumericalMethods.Task10/bin/Debug/net6.0-windows/NumericalMethods.Task10.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/NumericalMethods.Task10",
+            "console": "externalTerminal",
+            "stopAtEntry": false
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"
